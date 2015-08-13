@@ -23,29 +23,13 @@ class index_controller extends App
         print_r($_REQUEST);
         print_r($_SERVER);
 
-
-	   //$view=new \Ox\core\View;
-	    //$view->addKey("key","Значение");
-
-
-//View::build("showcase/offers");
-
-	    //Добавление новостиRoute /user/add:
-	    //$view->build("advert/test");
-
-	    //Добавление новостиRoute /user/add:
-	    //$view->build("advert/test");
-
-	    //Добавление новостиRoute /user/add:
-	    //$view->build("advert/stuff-edit");
-
-
     }
 
     public function post()
     {
         echo "<pre>";
         print_r($_FILES);
+        print_r($_REQUEST);
 
     }
 }
