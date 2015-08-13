@@ -1,0 +1,4 @@
+name: OxCRM
+migrations_namespace:  OxCRM
+table_name: migration_versions
+migrations_directory: migrations
