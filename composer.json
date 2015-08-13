@@ -1,0 +1,19 @@
+{
+  "require": {
+    "filp/whoops":"*@dev"
+  },
+  "autoload": {
+    "psr-0": {
+      "Ox": "http/",
+      "Ox\\controllers": "http/controllers",
+      "Ox\\core": "core",
+      "Ox\\models": "http/models"
+    },
+    "classmap": [
+      "http/",
+      "http/controllers",
+      "core",
+      "http/models"
+    ]
+  }
+}
