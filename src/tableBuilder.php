@@ -1,6 +1,6 @@
 <?php
 /**
- * Created by OxCRM.
+ * Created by oxCRM.
  * User: Александр
  * Date: 24.05.2015
  * Time: 23:04
@@ -9,7 +9,7 @@
 /**
  * Class tableBuilder
  */
-namespace Ox\core;
+namespace ox\core;
 class tableBuilder
 {
 

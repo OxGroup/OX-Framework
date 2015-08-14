@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Created by OxCRM.
+ * Created by oxCRM.
  * User: aliaxander
  * Date: 18.05.15
  * Time: 14:34
@@ -10,9 +10,9 @@
 /**
  * Class route
  */
-namespace Ox\core;
+namespace ox\core;
 
-use Ox\models\Auth;
+use ox\models\Auth;
 
 class route
 {
@@ -48,10 +48,10 @@ class route
             $class .= "_controller";
 
             try {
-                $class = "\\Ox\\controllers\\" . $class;
+                $class = "\\ox\\controllers\\" . $class;
 
                 $controller = new  $class();
-                if (is_subclass_of($controller, 'Ox\core\App')) {
+                if (is_subclass_of($controller, 'ox\core\App')) {
 
                     if (!empty($_POST)) {
                         $controller->post();
@@ -107,7 +107,7 @@ class route
                     $this->cous++;
                     $func = explode(":", $funcs);
                     if (isset($func[1])) {
-                        $object = "\\Ox\\models\\" . $func[0];
+                        $object = "\\ox\\models\\" . $func[0];
                         $$func[0] = new $object;
                         $$func[0]->$func[1]();
                     } else {

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Created by OxCRM.
+ * Created by oxCRM.
  * User: aliaxander
  * Date: 18.05.15
  * Time: 14:41
@@ -10,9 +10,9 @@
 /**
  * Class App
  */
-namespace Ox\core;
-use Ox\models\Auth;
-use Ox\models\ErrorNotif;
+namespace ox\core;
+use ox\models\Auth;
+use ox\models\ErrorNotif;
 
 class App
     implements IController

@@ -1,6 +1,6 @@
 <?php
 /**
- * Created by OxCRM.
+ * Created by oxCRM.
  * User: Александр
  * Date: 31.05.2015
  * Time: 20:44
@@ -11,8 +11,8 @@
 /**
  * Class AbstractModel
  */
-namespace Ox\core;
-use \Ox\core\dbMysql;
+namespace ox\core;
+use \ox\core\dbMysql;
 abstract class AbstractModel
 
 {

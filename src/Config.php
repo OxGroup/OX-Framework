@@ -1,12 +1,12 @@
 <?php
 /**
- * Created by OxCRM.
+ * Created by oxCRM.
  * User: aliaxander
  * Date: 10.07.15
  * Time: 12:58
  */
 
-namespace Ox\core;
+namespace ox\core;
 
 
 class Config

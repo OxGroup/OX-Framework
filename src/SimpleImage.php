@@ -1,12 +1,12 @@
 <?php
 /**
- * Created by OxCRM.
+ * Created by oxCRM.
  * User: aliaxander
  * Date: 19.06.15
  * Time: 17:46
  */
 
-namespace Ox\core;
+namespace ox\core;
 
 
 class SimpleImage {

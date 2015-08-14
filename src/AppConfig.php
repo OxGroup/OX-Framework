@@ -1,6 +1,6 @@
 <?php
 /**
- * Created by OxCRM.
+ * Created by oxCRM.
  * User: aliaxander
  * Date: 21.05.15
  * Time: 16:23
@@ -9,7 +9,7 @@
 /**
  * Class AppConfig
  */
-namespace Ox\core;
+namespace ox\core;
 class AppConfig
 {
     public $route;

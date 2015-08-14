@@ -1,15 +1,15 @@
 <?php
 /**
- * Created by OxCRM.
+ * Created by oxCRM.
  * User: ���������
  * Date: 11.07.2015
  * Time: 22:26
  */
 
-namespace Ox\core;
+namespace ox\core;
 
 
-class Ox
+class ox
 {
     public static function start(){
 
@@ -27,12 +27,12 @@ class Ox
 
         $whoops->register();
 
-        $config=new \Ox\core\Config();
+        $config=new \ox\core\Config();
         ini_set("session.cookie_domain",".".$config->domain);
 
         session_start();
 
-        new \Ox\controllers\Routes;
+        new \ox\controllers\Routes;
 
     }
 

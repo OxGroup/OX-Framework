@@ -1,12 +1,12 @@
 <?php
 
 /**
- * Created by OxCRM.
+ * Created by oxCRM.
  * User: Александр
  * Date: 02.06.2015
  * Time: 22:16
  */
-namespace Ox\core;
+namespace ox\core;
 class Hash
 {
     private $rounds;

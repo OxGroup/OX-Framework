@@ -1,12 +1,12 @@
 <?php
 
 /**
- * Created by OxCRM.
+ * Created by oxCRM.
  * User: Александр
  * Date: 31.05.2015
  * Time: 21:15
  */
-namespace Ox\core;
+namespace ox\core;
 class View
 {
     protected static $data = array();

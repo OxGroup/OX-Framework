@@ -1,11 +1,11 @@
 <?php
 /**
- * Created by OxCRM.
+ * Created by oxCRM.
  * User: Александр
  * Date: 01.06.2015
  * Time: 21:30
  */
-namespace Ox\core;
+namespace ox\core;
 interface IController {
     public function view();
     public function post();

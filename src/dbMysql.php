@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Created by OxCRM.
+ * Created by oxCRM.
  * User: aliaxander
  * Date: 18.05.15
  * Time: 10:44
@@ -9,10 +9,10 @@
 
 //CRUD Technology :)
 
-namespace Ox\core;
+namespace ox\core;
 /**
  * Class dbMysql
- * @package Ox\core
+ * @package ox\core
  */
 class dbMysql
 {

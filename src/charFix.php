@@ -1,6 +1,6 @@
 <?php
 /**
- * Created by OxCRM.
+ * Created by oxCRM.
  * User: aliaxander
  * Date: 19.05.15
  * Time: 14:38
@@ -9,7 +9,7 @@
 /**
  * Class charFix
  */
-namespace Ox\core;
+namespace ox\core;
 class charFix
 {
 
