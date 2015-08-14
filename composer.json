@@ -15,12 +15,19 @@
     "psr-0": {
       "Ox": "src/",
       "Ox\\": "src/"
-    }
+    },
+    "classmap": [
+      "src/"
+    ]
+
   },
   "autoload": {
     "psr-0": {
       "Ox": "src/",
       "Ox\\": "src/"
-    }
+    },
+    "classmap": [
+      "src/"
+    ]
   }
 }
