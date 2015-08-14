@@ -6,9 +6,9 @@
  * Time: 14:36
  */
 
-namespace ox\core;
+namespace Ox;
 
-use ox\core;
+use Ox;
 
 class Auth extends AbstractModel
 {
@@ -33,9 +33,9 @@ class Auth extends AbstractModel
 
 
         $config=new core\Config();
-        $charFix=new \ox\core\charFix();
+        $charFix=new \Ox\charFix();
         $data = self::getUserConfig(self::$user);
-        $hash = new \ox\core\Hash;
+        $hash = new \Ox\Hash;
         $newpass = $hash->make($data->rows['0']->password . date("H:m:d:Y:s"));
 
        // $_SESSION['id'] = self::$user;
@@ -75,7 +75,7 @@ class Auth extends AbstractModel
     public static function getStatus()
     {
 
-        $charFix = new \ox\core\charFix();
+        $charFix = new \Ox\charFix();
         if (!empty($_COOKIE['id'])) $_SESSION['id'] = $_COOKIE['id'];
         if (!empty($_COOKIE['userneme'])) $_SESSION['userneme'] = $_COOKIE['userneme'];
         if (!empty($_COOKIE['pass'])) $_SESSION['pass'] = $_COOKIE['pass'];
@@ -104,7 +104,7 @@ class Auth extends AbstractModel
     public static function getConfigSess()
     {
 
-        $charFix = new \ox\core\charFix();
+        $charFix = new \Ox\charFix();
 
 
         if (isset($_COOKIE['id']) and isset($_COOKIE['userneme']) and !empty($_COOKIE['id']) and !empty($_COOKIE['userneme'])) {

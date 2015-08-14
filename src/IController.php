@@ -5,7 +5,7 @@
  * Date: 01.06.2015
  * Time: 21:30
  */
-namespace ox\core;
+namespace Ox;
 interface IController {
     public function view();
     public function post();

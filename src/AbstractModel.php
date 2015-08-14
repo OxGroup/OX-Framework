@@ -11,8 +11,8 @@
 /**
  * Class AbstractModel
  */
-namespace ox\core;
-use \ox\core\dbMysql;
+namespace Ox;
+use \Ox\dbMysql;
 abstract class AbstractModel
 
 {

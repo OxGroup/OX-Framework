@@ -9,7 +9,7 @@
 /**
  * Class tableBuilder
  */
-namespace ox\core;
+namespace Ox;
 class tableBuilder
 {
 

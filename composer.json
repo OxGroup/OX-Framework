@@ -11,10 +11,16 @@
     "php": ">=5.4.0",
     "filp/whoops": "*@dev"
   },
+  "autoload-dev": {
+    "psr-0": {
+      "Ox": "src/",
+      "Ox\\": "src/"
+    }
+  },
   "autoload": {
     "psr-0": {
-      "NS_": "src/",
-      "ox\\core": "src/"
+      "Ox": "src/",
+      "Ox\\": "src/"
     }
   }
 }

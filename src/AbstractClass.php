@@ -9,7 +9,7 @@
 /**
  * Class AbstractClass
  */
-namespace ox\core;
+namespace Ox;
 abstract class AbstractClass
 {
     abstract public function  view();

@@ -10,9 +10,9 @@
 /**
  * Class route
  */
-namespace ox\core;
+namespace Ox;
 
-use ox\models\Auth;
+use Ox\models\Auth;
 
 class route
 {
@@ -48,10 +48,10 @@ class route
             $class .= "_controller";
 
             try {
-                $class = "\\ox\\controllers\\" . $class;
+                $class = "\\Ox\\controllers\\" . $class;
 
                 $controller = new  $class();
-                if (is_subclass_of($controller, 'ox\core\App')) {
+                if (is_subclass_of($controller, 'Ox\App')) {
 
                     if (!empty($_POST)) {
                         $controller->post();
@@ -107,7 +107,7 @@ class route
                     $this->cous++;
                     $func = explode(":", $funcs);
                     if (isset($func[1])) {
-                        $object = "\\ox\\models\\" . $func[0];
+                        $object = "\\Ox\\models\\" . $func[0];
                         $$func[0] = new $object;
                         $$func[0]->$func[1]();
                     } else {
