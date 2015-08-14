@@ -1,5 +1,5 @@
 {
-  "name": "Ox/OX-Framework",
+  "name": "ox/ox-framework",
   "license": "OxProfitGroup",
   "authors": [
     {
@@ -14,9 +14,7 @@
   "autoload": {
     "psr-0": {
       "NS_": "src/",
-      "Ox\\core\\": "src/"
+      "Ox\\core": "src/"
     }
   }
 }
-
-
