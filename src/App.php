@@ -11,8 +11,8 @@
  * Class App
  */
 namespace Ox;
-use Ox\models\Auth;
-use Ox\models\ErrorNotif;
+use OxApp\models\Auth;
+use OxApp\models\ErrorNotif;
 
 class App
     implements IController
