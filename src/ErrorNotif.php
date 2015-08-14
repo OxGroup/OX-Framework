@@ -15,7 +15,7 @@ namespace Ox;
  */
 class ErrorNotif extends AbstractModel {
 
-    public static function build($errorFile){
+    public static function build(){
         echo __DIR__ . "/../errors.php";
        include_once(__DIR__ . "/../errors.php");
         $arrayErrors=array();
