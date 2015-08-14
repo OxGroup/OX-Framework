@@ -43,7 +43,7 @@ class Config
     }
 
     public function checkHost(){
-       if(self::domain==$_SERVER['HTTP_HOST']){
+       if(self::$domain==$_SERVER['HTTP_HOST']){
            return true;
        }else{
            return false;
