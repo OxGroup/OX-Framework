@@ -17,7 +17,7 @@ namespace Ox;
 class DbMysql
 {
 
-	public $dbh, $charFix, $whereTpl, $freeWhere, $cfg;
+	public $dbh, $CharFix, $whereTpl, $freeWhere, $cfg;
 	protected $data = array();
 	protected $dataParams, $dataTpl, $whereParams, $whereData;
 
@@ -109,7 +109,7 @@ class DbMysql
 	protected function buildParams($params = array(), $sub = "")
 	{
 
-		$charFix = new charFix();
+		$CharFix = new CharFix();
 		foreach ($params as $key => $val) {
 
 			$keyChar = explode("|", $key);
@@ -118,23 +118,23 @@ class DbMysql
 
 				switch ($keyChar['1']) {
 					case("noSpec"):
-						$val = $charFix->noSpec($val);
+						$val = $CharFix->noSpec($val);
 						break;
 
 					case("noHtml"):
-						$val = $charFix->noHtml($val);
+						$val = $CharFix->noHtml($val);
 						break;
 
 					case("charNumber"):
-						$val = $charFix->charNumber($val);
+						$val = $CharFix->charNumber($val);
 						break;
 
 					case("char"):
-						$val = $charFix->char($val);
+						$val = $CharFix->char($val);
 						break;
 
 					case("number"):
-						$val = $charFix->number($val);
+						$val = $CharFix->number($val);
 						break;
 				}
 			}
@@ -161,7 +161,7 @@ class DbMysql
 				$key = $keyChar['0'];
 			}
 
-			$key = $charFix->charNumber($key);
+			$key = $CharFix->charNumber($key);
 			$dataPocess[$sub . $key] = $val;
 
 			$str = "`{$keyChar['0']}`{$spec}{$specStart}:{$sub}{$key}{$specStop}";

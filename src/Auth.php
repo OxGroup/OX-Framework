@@ -33,7 +33,7 @@ class Auth extends AbstractModel
 
 
         $config=new Config();
-        $charFix=new \Ox\charFix();
+        $CharFix=new \Ox\CharFix();
         $data = self::getUserConfig(self::$user);
         $hash = new \Ox\Hash;
         $newpass = $hash->make($data->rows['0']->password . date("H:m:d:Y:s"));
@@ -44,7 +44,7 @@ class Auth extends AbstractModel
         setcookie("id",self::$user, time() + 60 * 60 * 24 * 30 * 12, "/", ".".$config->domain);
         setcookie("userneme", $data->rows['0']->email, time() + 60 * 60 * 24 * 30 * 12, "/", ".".$config->domain);
         setcookie("pass", $newpass, time() + 60 * 60 * 24 * 30 * 12, "/", ".".$config->domain);
-        self::Update(array("remember_token"=>$charFix->char($newpass)),array("id"=>self::$user));
+        self::Update(array("remember_token"=>$CharFix->char($newpass)),array("id"=>self::$user));
 
         return true;
     }
@@ -75,14 +75,14 @@ class Auth extends AbstractModel
     public static function getStatus()
     {
 
-        $charFix = new \Ox\charFix();
+        $CharFix = new \Ox\CharFix();
         if (!empty($_COOKIE['id'])) $_SESSION['id'] = $_COOKIE['id'];
         if (!empty($_COOKIE['userneme'])) $_SESSION['userneme'] = $_COOKIE['userneme'];
         if (!empty($_COOKIE['pass'])) $_SESSION['pass'] = $_COOKIE['pass'];
 
         if (isset($_SESSION['id']) and isset($_SESSION['userneme']) and !empty($_SESSION['id']) and !empty($_SESSION['userneme'])) {
             if (empty($_SESSION['pass'])) $_SESSION['pass'] = "";
-            $_SESSION['pass'] = $charFix->char($_SESSION['pass']);
+            $_SESSION['pass'] = $CharFix->char($_SESSION['pass']);
             $user = self::findByColumn(array("id" => $_SESSION['id']));
             if (empty($_COOKIE['pass'])) {
                 $_SESSION['pass'] = "";
@@ -104,12 +104,12 @@ class Auth extends AbstractModel
     public static function getConfigSess()
     {
 
-        $charFix = new \Ox\charFix();
+        $CharFix = new \Ox\CharFix();
 
 
         if (isset($_COOKIE['id']) and isset($_COOKIE['userneme']) and !empty($_COOKIE['id']) and !empty($_COOKIE['userneme'])) {
             if (empty($_COOKIE['pass'])) $_COOKIE['pass'] = "";
-            $_COOKIE['pass'] = $charFix->char($_COOKIE['pass']);
+            $_COOKIE['pass'] = $CharFix->char($_COOKIE['pass']);
             $user = self::findByColumn(array("id" => $_COOKIE['id']));
             if (empty($_COOKIE['pass'])) {
                 $_COOKIE['pass'] = "";

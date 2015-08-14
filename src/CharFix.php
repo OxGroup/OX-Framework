@@ -7,7 +7,7 @@
  */
 
 /**
- * Class charFix
+ * Class CharFix
  */
 namespace Ox;
 class CharFix

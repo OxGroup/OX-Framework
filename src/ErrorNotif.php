@@ -24,7 +24,7 @@ class ErrorNotif extends AbstractModel
 			$errorNotif = array();
 			if (!empty($_SESSION['errorNotif'])) {
 
-				$charfix = new charFix();
+				$CharFix = new CharFix();
 				foreach ($_SESSION['errorNotif'] as $val) {
 
 					$code = @explode(".", $val['code']);
@@ -37,7 +37,7 @@ class ErrorNotif extends AbstractModel
 								$text = str_replace(":{$titleCode}", $valCode, $text);
 							}
 						}
-						$errorNotif[] = array("title" => $charfix->FixAll($title, "noSpec|noHtml"), "text" => $charfix->FixAll($text, "noSpec|noHtml"), "color" => $arrayColor[$code[0]]);
+						$errorNotif[] = array("title" => $CharFix->FixAll($title, "noSpec|noHtml"), "text" => $CharFix->FixAll($text, "noSpec|noHtml"), "color" => $arrayColor[$code[0]]);
 					}
 				}
 				$_SESSION['errorNotif'] = array();
