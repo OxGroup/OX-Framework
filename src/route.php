@@ -18,7 +18,7 @@ class route
     public $route;
     public $class;
     public $cous = 0;
-    public $setHost;
+    public $setHost = "all";
     public $status = "all";
     public $config;
     public static $get;
