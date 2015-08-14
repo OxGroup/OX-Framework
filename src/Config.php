@@ -35,7 +35,7 @@ class Config
         }
     }
     public function subDomain(){
-        $dir=str_replace($this->domain,"",$_SERVER['HTTP_HOST']);
+        $dir=str_replace(self::$domain,"",$_SERVER['HTTP_HOST']);
         if(isset($dir{0}) and $dir{0}==".")$dir = substr_replace($dir, "", 0, 1);
 
         if(substr($dir, -1)==".")$dir = substr_replace($dir, "", -1);
@@ -43,7 +43,7 @@ class Config
     }
 
     public function checkHost(){
-       if($this->domain==$_SERVER['HTTP_HOST']){
+       if(self::domain==$_SERVER['HTTP_HOST']){
            return true;
        }else{
            return false;
