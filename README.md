@@ -1,2 +1,3 @@
 # OX-Framework
-5cf7b9d29c4159cc36f3ea922b3aa300ab5bc5ba
+composer config -g github-oauth.github.com d4b3cf49a5f9b1e8547306f13372022ff8e6df27
+composer clear-cache
