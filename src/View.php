@@ -24,7 +24,7 @@ class View
             }
         }
         ob_start();
-        $tpl = __DIR__ . "/../views/" . $tpl . ".tpl.php";
+        $tpl = __DIR__ . "/../../../../views/" . $tpl . ".tpl.php";
         if (file_exists($tpl)) {
             require_once $tpl;
 
