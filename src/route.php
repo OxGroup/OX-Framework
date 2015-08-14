@@ -48,7 +48,7 @@ class route
             $class .= "_controller";
 
             try {
-                $class = "\\Ox\\controllers\\" . $class;
+                $class = "\\OxApp\\controllers\\" . $class;
 
                 $controller = new  $class();
                 if (is_subclass_of($controller, 'Ox\App')) {

@@ -32,7 +32,7 @@ class Auth extends AbstractModel
     {
 
 
-        $config=new core\Config();
+        $config=new Config();
         $charFix=new \Ox\charFix();
         $data = self::getUserConfig(self::$user);
         $hash = new \Ox\Hash;
