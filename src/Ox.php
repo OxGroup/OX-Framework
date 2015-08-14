@@ -32,7 +32,7 @@ class ox
 
         session_start();
 
-        new \Ox\controllers\Routes;
+        new \OxApp\controllers\Routes;
 
     }
 
