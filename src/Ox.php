@@ -27,8 +27,8 @@ class ox
 
         $whoops->register();
 
-        $config=new \Ox\Config();
-        ini_set("session.cookie_domain",".".$config->domain);
+
+        ini_set("session.cookie_domain",".".Config::$domain);
 
         session_start();
 
