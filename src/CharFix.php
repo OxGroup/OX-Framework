@@ -10,7 +10,7 @@
  * Class charFix
  */
 namespace Ox;
-class charFix
+class CharFix
 {
 
     public $text;

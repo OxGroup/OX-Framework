@@ -14,7 +14,7 @@ namespace Ox;
  * Class dbMysql
  * @package Ox
  */
-class dbMysql
+class DbMysql
 {
 
 	public $dbh, $charFix, $whereTpl, $freeWhere, $cfg;

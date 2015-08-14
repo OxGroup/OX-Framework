@@ -13,7 +13,7 @@
 namespace Ox;
 
 
-class route
+class Route
 {
     public $route;
     public $class;

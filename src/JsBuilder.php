@@ -10,7 +10,7 @@
  * Class jsBuilder
  */
 namespace Ox;
-class jsBuilder
+class JsBuilder
 {
     /**
      * @param $file

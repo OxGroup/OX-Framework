@@ -10,7 +10,7 @@
  * Class tableBuilder
  */
 namespace Ox;
-class tableBuilder
+class TableBuilder
 {
 
     public $thoption;
@@ -51,7 +51,7 @@ class tableBuilder
         }
     }
 
-    public function SetFooter()
+    public function setFooter()
     {
 
     }
@@ -93,7 +93,7 @@ class tableBuilder
 
     }
 
-    public function Clean()
+    public function clean()
     {
         foreach ($this as $k => $v) {
             $this->{$k} = "";

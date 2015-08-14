@@ -9,7 +9,7 @@
 namespace Ox;
 
 
-class ox
+class Ox
 {
     public static function start(){
 
