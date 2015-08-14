@@ -12,7 +12,7 @@
  * Class AbstractModel
  */
 namespace Ox;
-use \Ox\dbMysql;
+use \Ox\DbMysql;
 abstract class AbstractModel
 
 {
@@ -24,14 +24,14 @@ abstract class AbstractModel
      */
     public static function findAll()
     {
-        $mysql = new dbMysql();
+        $mysql = new DbMysql();
         $mysql->cfg = array("table" => static::$table);
         return $mysql->read();
     }
 
     public static function findByColumn($data)
     {
-        $mysql = new dbMysql();
+        $mysql = new DbMysql();
         $mysql->cfg = array("table" => static::$table,"where"=>$data);
         return $mysql->read();
     }
@@ -42,7 +42,7 @@ abstract class AbstractModel
      */
     public static function Add($data)
     {
-        $mysql = new dbMysql();
+        $mysql = new DbMysql();
         $mysql->cfg = array("table" => static::$table, "data" => $data);
         return $mysql->create();
     }
@@ -54,7 +54,7 @@ abstract class AbstractModel
      */
     public static function Update($data,$where)
     {
-        $mysql = new dbMysql();
+        $mysql = new DbMysql();
         $mysql->cfg = array("table" => static::$table, "data" => $data, "where" => $where);
         return $mysql->update();
     }
@@ -65,7 +65,7 @@ abstract class AbstractModel
      */
     public static function Delete($where)
     {
-        $mysql = new dbMysql();
+        $mysql = new DbMysql();
         $mysql->cfg = array("table" => static::$table, "where" => $where);
         return $mysql->delete();
     }

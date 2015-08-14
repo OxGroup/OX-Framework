@@ -18,7 +18,7 @@ class App
 
     public function __construct()
     {
-        $this->mysql = new dbMysql();
+        $this->mysql = new DbMysql();
         $this->CharFix = new CharFix();
         //$this->jsBuilder = new jsBuilder();
         $this->config = new AppConfig();

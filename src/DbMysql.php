@@ -11,7 +11,7 @@
 
 namespace Ox;
 /**
- * Class dbMysql
+ * Class DbMysql
  * @package Ox
  */
 class DbMysql
