@@ -1,0 +1,8 @@
+{
+  "name": "vendor/OX-Framework",
+  "autoload": {
+    "psr-0": {
+      "NS_": "src/"
+    }
+  }
+}
