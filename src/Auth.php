@@ -1,6 +1,6 @@
 <?php
 /**
- * Created by oxCRM.
+ * Created by OxProfitGroup.
  * User: aliaxander
  * Date: 06.06.15
  * Time: 14:36

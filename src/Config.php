@@ -1,6 +1,6 @@
 <?php
 /**
- * Created by oxCRM.
+ * Created by OxProfitGroup.
  * User: aliaxander
  * Date: 10.07.15
  * Time: 12:58
@@ -12,11 +12,11 @@ namespace Ox;
 class Config
 {
 
-    public $domain="oxcrm.dev";
-    public $dbhost = "localhost";
-    public $dbname = "oxcrm";
-    public $dbuser = "oxcrm";
-    public $dbuserpass = "oxcrm";
+    public static $domain="test.dev";
+    public static $dbhost = "localhost";
+    public static $dbname = "test";
+    public static $dbuser = "root";
+    public static $dbuserpass = "";
 
 
     public static $curr = array("ru" => "руб.", "by" => "руб.", "ua" => "грн.", "kz" => "тенге.",);
@@ -26,11 +26,11 @@ class Config
  
         if(file_exists(__DIR__."/../test.conf.php")){
             include_once(__DIR__."/../test.conf.php");
-            $this->domain=\TestConfig::$domain;
-            $this->dbhost=\TestConfig::$dbhost;
-            $this->dbname=\TestConfig::$dbname;
-            $this->dbuser=\TestConfig::$dbuser;
-            $this->dbuserpass=\TestConfig::$dbuserpass;
+            self::$domain=\TestConfig::$domain;
+            self::$dbhost=\TestConfig::$dbhost;
+            self::$dbname=\TestConfig::$dbname;
+            self::$dbuser=\TestConfig::$dbuser;
+            self::$dbuserpass=\TestConfig::$dbuserpass;
 
         }
     }

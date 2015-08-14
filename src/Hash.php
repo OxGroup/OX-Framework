@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Created by oxCRM.
+ * Created by OxProfitGroup.
  * User: Александр
  * Date: 02.06.2015
  * Time: 22:16
