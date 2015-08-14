@@ -9,10 +9,10 @@
 
 //CRUD Technology :)
 
-namespace Ox\core;
+namespace oxCore;
 /**
  * Class dbMysql
- * @package Ox\core
+ * @package oxCore
  */
 class dbMysql
 {

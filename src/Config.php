@@ -6,7 +6,7 @@
  * Time: 12:58
  */
 
-namespace Ox\core;
+namespace oxCore;
 
 
 class Config

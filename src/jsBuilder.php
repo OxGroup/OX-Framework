@@ -9,7 +9,7 @@
 /**
  * Class jsBuilder
  */
-namespace Ox\core;
+namespace oxCore;
 class jsBuilder
 {
     /**

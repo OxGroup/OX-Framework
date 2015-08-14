@@ -10,7 +10,7 @@
 /**
  * Class App
  */
-namespace Ox\core;
+namespace oxCore;
 use Ox\models\Auth;
 use Ox\models\ErrorNotif;
 

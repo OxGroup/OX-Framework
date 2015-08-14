@@ -6,7 +6,7 @@
  * Date: 02.06.2015
  * Time: 22:16
  */
-namespace Ox\core;
+namespace oxCore;
 class Hash
 {
     private $rounds;

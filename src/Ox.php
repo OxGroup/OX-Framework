@@ -1,12 +1,12 @@
 <?php
 /**
  * Created by OxCRM.
- * User: Александр
+ * User: пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
  * Date: 11.07.2015
  * Time: 22:26
  */
 
-namespace Ox\core;
+namespace oxCore;
 
 
 class Ox
@@ -27,7 +27,7 @@ class Ox
 
         $whoops->register();
 
-        $config=new \Ox\core\Config();
+        $config=new \oxCore\Config();
         ini_set("session.cookie_domain",".".$config->domain);
 
         session_start();
