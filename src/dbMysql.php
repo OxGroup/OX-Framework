@@ -24,9 +24,7 @@ class dbMysql
 
 	public function __construct()
 	{
-		$config = new Config();
-
-		$this->dbh = new \PDO('mysql:host=' . $config->dbhost . ';dbname=' . $config->dbname, $config->dbuser, $config->dbuserpass);
+		$this->dbh = new \PDO('mysql:host=' . Config::$dbhost . ';dbname=' . Config::$dbname, Config::$dbuser, Config::$dbuserpass);
 		$this->dbh->exec("set names utf8");
 
 	}
