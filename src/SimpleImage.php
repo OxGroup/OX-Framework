@@ -6,7 +6,7 @@
  * Time: 17:46
  */
 
-namespace oxCore;
+namespace Ox\core;
 
 
 class SimpleImage {

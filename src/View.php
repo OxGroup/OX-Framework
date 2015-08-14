@@ -6,7 +6,7 @@
  * Date: 31.05.2015
  * Time: 21:15
  */
-namespace oxCore;
+namespace Ox\core;
 class View
 {
     protected static $data = array();

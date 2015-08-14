@@ -9,7 +9,7 @@
 /**
  * Class AppConfig
  */
-namespace oxCore;
+namespace Ox\core;
 class AppConfig
 {
     public $route;

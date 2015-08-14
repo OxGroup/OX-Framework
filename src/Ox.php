@@ -6,7 +6,7 @@
  * Time: 22:26
  */
 
-namespace oxCore;
+namespace Ox\core;
 
 
 class Ox
@@ -27,7 +27,7 @@ class Ox
 
         $whoops->register();
 
-        $config=new \oxCore\Config();
+        $config=new \Ox\core\Config();
         ini_set("session.cookie_domain",".".$config->domain);
 
         session_start();

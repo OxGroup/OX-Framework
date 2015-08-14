@@ -1,8 +1,22 @@
 {
   "name": "Ox/OX-Framework",
+  "license": "OxProfitGroup",
+  "authors": [
+    {
+      "name": "Aliaxander Tsihankou",
+      "email": "maste.craft@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0",
+
+  },
   "autoload": {
     "psr-0": {
-      "NS_": "src/"
+      "NS_": "src/",
+      "Ox\\core\\": "src/"
     }
   }
 }
+
+

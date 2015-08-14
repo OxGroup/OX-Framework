@@ -10,7 +10,7 @@
 /**
  * Class route
  */
-namespace oxCore;
+namespace Ox\core;
 
 use Ox\models\Auth;
 
@@ -51,7 +51,7 @@ class route
                 $class = "\\Ox\\controllers\\" . $class;
 
                 $controller = new  $class();
-                if (is_subclass_of($controller, 'oxCore\App')) {
+                if (is_subclass_of($controller, 'Ox\core\App')) {
 
                     if (!empty($_POST)) {
                         $controller->post();

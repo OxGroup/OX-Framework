@@ -9,7 +9,7 @@
 /**
  * Class charFix
  */
-namespace oxCore;
+namespace Ox\core;
 class charFix
 {
 
