@@ -106,7 +106,11 @@ class route
                     $this->cous++;
                     $func = explode(":", $funcs);
                     if (isset($func[1])) {
-                        $object = "\\OxApp\\models\\" . $func[0];
+                        if(file_exists(__DIR__ . "/../../../../http/models". $func[0].".php")) {
+                            $object = "\\OxApp\\models\\" . $func[0];
+                        }else{
+                            $object = "\\Ox\\" . $func[0];
+                        }
                         $$func[0] = new $object;
                         $$func[0]->$func[1]();
                     } else {
