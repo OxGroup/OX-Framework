@@ -106,7 +106,7 @@ class route
                     $this->cous++;
                     $func = explode(":", $funcs);
                     if (isset($func[1])) {
-                        $object = "\\Ox\\models\\" . $func[0];
+                        $object = "\\OxApp\\models\\" . $func[0];
                         $$func[0] = new $object;
                         $$func[0]->$func[1]();
                     } else {
