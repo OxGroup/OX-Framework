@@ -12,7 +12,6 @@
  */
 namespace Ox;
 
-use OxApp\models\Auth;
 
 class route
 {
