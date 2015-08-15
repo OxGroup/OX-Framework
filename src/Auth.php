@@ -41,9 +41,9 @@ class Auth extends AbstractModel
        // $_SESSION['id'] = self::$user;
        // $_SESSION['userneme'] = $data->rows['0']->email;
        // $_SESSION['pass'] = $newpass;
-        setcookie("id",self::$user, time() + 60 * 60 * 24 * 30 * 12, "/", ".".$config->domain);
-        setcookie("userneme", $data->rows['0']->email, time() + 60 * 60 * 24 * 30 * 12, "/", ".".$config->domain);
-        setcookie("pass", $newpass, time() + 60 * 60 * 24 * 30 * 12, "/", ".".$config->domain);
+        setcookie("id",self::$user, time() + 60 * 60 * 24 * 30 * 12, "/", ".".Config::$domain);
+        setcookie("userneme", $data->rows['0']->email, time() + 60 * 60 * 24 * 30 * 12, "/", ".".Config::$domain);
+        setcookie("pass", $newpass, time() + 60 * 60 * 24 * 30 * 12, "/", ".".Config::$domain);
         self::Update(array("remember_token"=>$CharFix->char($newpass)),array("id"=>self::$user));
 
         return true;
