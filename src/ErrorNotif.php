@@ -15,12 +15,11 @@ namespace Ox;
  */
 class ErrorNotif extends AbstractModel
 {
-
-	public static function build($file = __DIR__ . "/../../../../http/errors.php")
+public static $file = __DIR__ . "/../../../../http/errors.php";
+	public static function build()
 	{
-
-		if (file_exists($file)) {
-			include_once(__DIR__ . "/../../../../http/errors.php");
+		if (file_exists(self::$file)) {
+			include_once(self::$file);
 			$errorNotif = array();
 			if (!empty($_SESSION['errorNotif'])) {
 
