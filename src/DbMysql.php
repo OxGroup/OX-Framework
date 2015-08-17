@@ -10,6 +10,10 @@
 //CRUD Technology :)
 
 namespace Ox;
+
+use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Migrations\Configuration\Configuration;
+
 /**
  * Class DbMysql
  * @package Ox
