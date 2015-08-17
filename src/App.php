@@ -18,14 +18,8 @@ class App
 
     public function __construct()
     {
-        $this->mysql = new DbMysql();
-        $this->CharFix = new CharFix();
-        //$this->jsBuilder = new jsBuilder();
-        $this->config = new AppConfig();
-        $this->View=new View();
         View::addKey("userNameProfile", Auth::GiveMeUserSettings()->name);
         View::addKey("errorNotif", ErrorNotif::build());
-
     }
 
     public function view()
