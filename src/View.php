@@ -9,31 +9,22 @@
 namespace Ox;
 class View
 {
+    public static $cache;
     protected static $data = array();
 
+    public function __construct($cache=false){
+        if($cache==true){
+            self::$settings= array('cache' => __DIR__ . '/../../../../views/cache');
+        }elseif($cache == false){
+            self::$settings = array('cache' => false);
+        }else{
+            self::$settings = array('cache' => __DIR__ . '/../../../../'. $cache);
+        }
+
+    }
     public static function addKey($key, $val)
     {
         self::$data[$key] = $val;
-    }
-
-    private static function addTlp($tpl)
-    {
-        if (!empty(self::$data)) {
-            foreach (self::$data as $key => $val) {
-                $$key = $val;
-            }
-        }
-        ob_start();
-        $tpl = __DIR__ . "/../../../../views/" . $tpl . ".tpl.php";
-        if (file_exists($tpl)) {
-            require_once $tpl;
-
-        } else {
-            die("View not found " . $tpl);
-        }
-        $content = ob_get_contents();
-        ob_clean();
-        return $content;
     }
 
     public static function build($tpl,$keys=array())
@@ -43,7 +34,11 @@ class View
                 self::$data[$key] = $val;
             }
         }
-        echo self::addTlp($tpl);
+
+        $loader = new \Twig_Loader_Filesystem(__DIR__ . '/../../../../views');
+        self::$twig = new \Twig_Environment($loader, self::$settings);
+
+        echo self::$twig->render($tpl . '.tpl.php', self::$data);
     }
 }
 

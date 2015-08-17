@@ -10,7 +10,8 @@
   "require": {
     "php": ">=5.3.0",
     "filp/whoops": "*@dev",
-    "doctrine/dbal": "2.*"
+    "doctrine/dbal": "2.*",
+    "twig/twig": "1.*"
   },
   "autoload-dev": {
     "psr-1": {
