@@ -24,8 +24,17 @@ class DbMysql
 
 	public function __construct()
 	{
-		$this->dbh = new \PDO('mysql:host=' . Config::$dbhost . ';dbname=' . Config::$dbname, Config::$dbuser, Config::$dbuserpass);
-		$this->dbh->exec("set names utf8");
+		$config = new \Doctrine\DBAL\Configuration();
+		$this->dbh = DriverManager::getConnection(array(
+			'dbname' => Config::$dbname,
+			'user' => Config::$dbuser,
+			'password' => Config::$dbuserpass,
+			'host' => Config::$dbhost,
+			'driver' => 'pdo_mysql',
+			'driverOptions' => array(
+				1002 => 'SET NAMES utf8'
+			)
+		), $config);
 
 	}
 
