@@ -24,8 +24,8 @@ class Config
 
     public function __construct(){
  
-        if(file_exists(__DIR__."/../test.conf.php")){
-            include_once(__DIR__."/../test.conf.php");
+        if(file_exists(__DIR__."/../../../../test.conf.php")){
+            include_once(__DIR__."/../../../../test.conf.php");
             self::$domain=\TestConfig::$domain;
             self::$dbhost=\TestConfig::$dbhost;
             self::$dbname=\TestConfig::$dbname;
