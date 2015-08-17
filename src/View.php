@@ -9,7 +9,8 @@
 namespace Ox;
 class View
 {
-	public static $cache;
+	public static $settings = array();
+	public static $twig;
 	protected static $data = array();
 
 	public function __construct($cache = false)
