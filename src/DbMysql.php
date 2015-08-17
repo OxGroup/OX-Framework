@@ -68,13 +68,9 @@ class DbMysql
 			$this->dataTpl = str_replace(" and ", ', ', $this->dataTpl);
 			$sqltxt = "UPDATE `" . $this->table . "` SET {$this->dataTpl} {$this->whereTpl} {$orderby} {$limit};";
 			$sth = $this->dbh->prepare($sqltxt);
-
-
 			$sth->execute($this->whereParams + $this->dataParams);
-
-			$result = $sth->fetchAll(\PDO::FETCH_OBJ);
 			$this->clean();
-			return (object)array("cous" => $sth->rowCount(), "rows" => $result, "sqlquery" => $sqltxt, "errorInfo" => $sth->errorInfo());
+			return (object)array("cous" => $sth->rowCount(), "sqlquery" => $sqltxt, "errorInfo" => $sth->errorInfo());
 
 		}
 	}
@@ -224,7 +220,6 @@ class DbMysql
 			$sqltxt = "DELETE FROM `" . $this->table . "` {$this->whereTpl} {$orderby} {$limit};";
 			$sth = $this->dbh->prepare($sqltxt);
 			$sth->execute($this->whereParams);
-			$result = $sth->fetchAll(\PDO::FETCH_OBJ);
 			$this->clean();
 			return (object)array("cous" => $sth->rowCount(), "rows" => $result, "sqlquery" => $sqltxt, "errorInfo" => $sth->errorInfo());
 
@@ -250,7 +245,7 @@ class DbMysql
 				$this->data = array();
 
 			$sth->execute($this->dataParams);
-			//  $result = $sth->fetchAll(\PDO::FETCH_OBJ);
+			
 			$this->clean();
 			return (object)array("cous" => $sth->rowCount(), "id" => $this->dbh->lastInsertId(), "sqlquery" => $sqltxt, "errorInfo" => $sth->errorInfo());
 
