@@ -8,8 +8,6 @@
 
 namespace Ox;
 
-use Ox;
-
 class Auth extends AbstractModel
 {
     protected static $table = "users";
