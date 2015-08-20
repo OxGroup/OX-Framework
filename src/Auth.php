@@ -10,7 +10,7 @@ namespace Ox;
 
 class Auth extends AbstractModel
 {
-    protected static $table = "users";
+    public static $table = "users";
     private static $user, $sess;
     public static $userConfig;
 
