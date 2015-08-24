@@ -17,6 +17,7 @@ class Config
     public static $dbname = "test";
     public static $dbuser = "root";
     public static $dbuserpass = "";
+    public static $dbDriver = "pdo_mysql";
 
 
     public static $curr = array("ru" => "руб.", "by" => "руб.", "ua" => "грн.", "kz" => "тенге.",);
@@ -30,7 +31,9 @@ class Config
             self::$dbhost=\TestConfig::$dbhost;
             self::$dbname=\TestConfig::$dbname;
             self::$dbuser=\TestConfig::$dbuser;
-            self::$dbuserpass=\TestConfig::$dbuserpass;
+            self::$dbuserpass = \TestConfig::$dbuserpass;
+            if(isset(\TestConfig::$dbDriver))
+                self::$dbDriver = \TestConfig::$dbDriver;
 
         }
     }

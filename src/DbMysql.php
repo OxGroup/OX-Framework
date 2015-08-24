@@ -34,7 +34,7 @@ class DbMysql
 			'user' => Config::$dbuser,
 			'password' => Config::$dbuserpass,
 			'host' => Config::$dbhost,
-			'driver' => 'pdo_mysql',
+			'driver' => Config::$dbDriver,
 			'driverOptions' => array(
 				1002 => 'SET NAMES utf8'
 			)

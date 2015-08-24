@@ -241,6 +241,5 @@ class CharFix
 
     }
 
-//$new = htmlspecialchars($insql, ENT_QUOTES);
 
 }

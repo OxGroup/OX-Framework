@@ -36,9 +36,6 @@ class Auth extends AbstractModel
         $hash = new \Ox\Hash;
         $newpass = $hash->make($data->rows['0']->password . date("H:m:d:Y:s"));
 
-       // $_SESSION['id'] = self::$user;
-       // $_SESSION['userneme'] = $data->rows['0']->email;
-       // $_SESSION['pass'] = $newpass;
         setcookie("id",self::$user, time() + 60 * 60 * 24 * 30 * 12, "/", ".".Config::$domain);
         setcookie("userneme", $data->rows['0']->email, time() + 60 * 60 * 24 * 30 * 12, "/", ".".Config::$domain);
         setcookie("pass", $newpass, time() + 60 * 60 * 24 * 30 * 12, "/", ".".Config::$domain);
@@ -57,9 +54,7 @@ class Auth extends AbstractModel
             setcookie('id');
             setcookie('userneme');
             setcookie('pass');
-         //   $_SESSION['id'] = "";
-         //   $_SESSION['userneme'] = "";
-         //   $_SESSION['pass'] = "";
+
             unset($_COOKIE['id']);
             unset($_COOKIE['userneme']);
             unset($_COOKIE['pass']);

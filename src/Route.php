@@ -26,11 +26,13 @@ class Route
     public function __construct()
     {
         $this->config = new Config();
-        if (Auth::getStatus() == true) {
-            $this->type = Auth::GiveMeUserSettings()->status;
-        } else {
-            $this->type = "all";
-        }
+
+            if (class_exists('Auth') and Auth::getStatus() == true) {
+                $this->type = Auth::GiveMeUserSettings()->status;
+            } else {
+                $this->type = "all";
+            }
+
 
     }
 
