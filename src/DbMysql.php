@@ -301,5 +301,34 @@ class DbMysql
 		return $this;
 
 	}
+	
+	
+	public function transaction($array){
+
+		try {
+			// do stuff
+
+			$this->dbh->beginTransaction(); // start inner transaction, nesting level 2
+
+			foreach ($array as $val) {
+				$stmt = $this->dbh->prepare($val);
+				$stmt->execute();
+			}
+
+			try {
+				// do stuff
+				$this->dbh->commit(); // commits inner transaction, does not start a new one
+				return true;
+			} catch (\Exception $e) {
+				$this->dbh->rollback(); // rolls back inner transaction, does not start a new one
+				return false;
+			}
+
+			$this->dbh->commit(); // commits outer transaction, and immediately starts a new one
+		} catch (\Exception $e) {
+			$this->dbh->rollback(); // rolls back outer transaction, and immediately starts a new one
+			return false;
+		}
+	}
 
 }
