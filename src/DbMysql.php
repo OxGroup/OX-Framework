@@ -77,26 +77,31 @@ class DbMysql
 
 	private function setCfg()
 	{
+
 		foreach ($this->cfg as $k => $v) {
 			$this->{$k} = $v;
 		}
 
 		if (isset($this->where) and $this->where != "") {
 			$where = $this->buildParams($this->where);
+
 			$where['tpl'] .= $this->freeWhere;
 			if ($where['tpl'] != "")
 				$where['tpl'] = "WHERE " . $where['tpl'];
 			$this->whereTpl = $where['tpl'];
 			$this->whereParams = $where['data'];
+		}elseif(!empty($this->freeWhere)){
+			$where=array();
+			$where['tpl'] = "WHERE " . $this->freeWhere;
+			$this->whereTpl = $where['tpl'];
 		}
 
-		if (isset($this->data) and $this->data != "") {
+		if (!empty($this->data) and $this->data != "") {
 			$where = $this->buildParams($this->data, "data");
 			$this->dataTpl = $where['tpl'];
 			$this->dataParams = $where['data'];
 
 		}
-
 
 		if (isset($this->order) and $this->order != "") {
 			$order = ($this->order == 'DESC') ? 'DESC' : 'ASC';
@@ -107,6 +112,7 @@ class DbMysql
 		if (isset($this->limit) and $this->limit != "") {
 			$this->limit = " limit " . $this->limit;
 		}
+
 	}
 
 	/**
