@@ -35,6 +35,14 @@ abstract class AbstractModel
         $mysql->cfg = array("table" => static::$table,"where"=>$data);
         return $mysql->read();
     }
+    
+    public static function findByColumnFree($data)
+    {
+        $mysql = new DbMysql();
+        $mysql->cfg = array("table" => static::$table);
+        $mysql->freeWhere=$data;
+        return $mysql->read();
+    }
 
     /**
      * @param $data
