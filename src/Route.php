@@ -27,7 +27,7 @@ class Route
 	{
 		$this->config = new Config();
 
-		if (class_exists('Auth') and Auth::getStatus() == true) {
+		if (Auth::getStatus() == true) {
 			$this->type = Auth::GiveMeUserSettings()->status;
 		} else {
 			$this->type = "all";
@@ -59,6 +59,7 @@ class Route
 					} else {
 						$controller->view();
 					}
+					die();
 				} else {
 					$controller = "";
 					die ('No extends App');
