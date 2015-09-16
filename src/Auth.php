@@ -85,7 +85,6 @@ class Auth extends AbstractModel
                 return false;
             }
         } else {
-            echo "no";
             return false;
         }
     }
