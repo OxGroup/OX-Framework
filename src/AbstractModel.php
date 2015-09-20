@@ -22,7 +22,7 @@ abstract class AbstractModel
      * @return array|string
      *
      */
-    public static function findAll()
+    public static function findAll($orderBy=array())
     {
         if (!empty($orderBy))
             $orderBy = array("order" => $orderBy);
