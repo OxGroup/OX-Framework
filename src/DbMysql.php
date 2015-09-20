@@ -104,9 +104,7 @@ class DbMysql
 		}
 
 		if (isset($this->order) and $this->order != "") {
-			$order = ($this->order == 'DESC') ? 'DESC' : 'ASC';
-			if (isset($order) and $order != "")
-				$this->orderby = " order by {$order}";
+				$this->orderby = " ORDER BY {$this->order}";
 		}
 
 		if (isset($this->limit) and $this->limit != "") {
