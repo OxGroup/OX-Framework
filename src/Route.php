@@ -169,6 +169,8 @@ class Route
 	{
 		if (class_exists('\OxApp\models\AuthStuff') and \OxApp\models\AuthStuff::getStatus() == true) {
 			$this->type = "stuff";
+		} elseif (Auth::getStatus() == true) {
+			$this->type = Auth::GiveMeUserSettings()->status;
 		} else {
 			$this->type = "all";
 		}
