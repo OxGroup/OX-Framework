@@ -22,9 +22,11 @@ class Route
 	public $status = "all";
 	public $config;
 	public static $get;
+	public $debug;
 
-	public function __construct()
+	public function __construct($debug=false)
 	{
+		$this->debug=$debug;
 		$this->config = new Config();
 
 		if (Auth::getStatus() == true) {
@@ -106,7 +108,8 @@ class Route
 
 
 		if (($this->type == $this->status or $this->status == "all") and $rootHost == true):
-			//  echo $this->type." - ".$route."<br/>";
+			if($this->debug==true)
+			  echo $this->type." - ".$route."<br/>";
 			if (!empty($funcs)) {
 
 				if ($route == $GET) {
@@ -135,8 +138,8 @@ class Route
 				$routePreg = str_replace(":char", "[A-Za-z0-9]*", $routePreg);
 				$routePreg = str_replace(":img", ".*[.](png|jpg|jpeg|gif)", $routePreg);
 
-
-				//  echo "$route==$GET<br/>";
+				if($this->debug==true)
+				  echo "$route==$GET<br/>";
 				if ((preg_match("/^" . $routePreg . "$/i", $GET) and $route != $GET) or $route == $GET) {
 
 					self::$get = explode("/", $GET);
