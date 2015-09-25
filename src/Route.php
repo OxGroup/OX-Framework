@@ -135,7 +135,7 @@ class Route
 
 				$routePreg = str_replace("/", '\/', $route);
 				$routePreg = str_replace(":num", "[0-9]*", $routePreg);
-				$routePreg = str_replace(":char", "[A-Za-z0-9]*", $routePreg);
+				$routePreg = str_replace(":char", "[A-Za-z0-9-]*", $routePreg);
 				$routePreg = str_replace(":img", ".*[.](png|jpg|jpeg|gif)", $routePreg);
 				$routePreg = "/^" . $routePreg . "$/i";
 				if($this->debug==true)
