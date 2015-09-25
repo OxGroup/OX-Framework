@@ -137,10 +137,10 @@ class Route
 				$routePreg = str_replace(":num", "[0-9]*", $routePreg);
 				$routePreg = str_replace(":char", "[A-Za-z0-9]*", $routePreg);
 				$routePreg = str_replace(":img", ".*[.](png|jpg|jpeg|gif)", $routePreg);
-
+				$routePreg = "/^" . $routePreg . "$/i";
 				if($this->debug==true)
-				  echo "$route==$GET<br/>";
-				if ((preg_match("/^" . $routePreg . "$/i", $GET) and $route != $GET) or $route == $GET) {
+				  echo "$routePreg==$GET<br/>";
+				if ((preg_match($routePreg, $GET) and $route != $GET) or $route == $GET) {
 
 					self::$get = explode("/", $GET);
 
