@@ -77,36 +77,40 @@ class DbMysql
 
 	private function setCfg()
 	{
+
 		foreach ($this->cfg as $k => $v) {
 			$this->{$k} = $v;
 		}
 
 		if (isset($this->where) and $this->where != "") {
 			$where = $this->buildParams($this->where);
+
 			$where['tpl'] .= $this->freeWhere;
 			if ($where['tpl'] != "")
 				$where['tpl'] = "WHERE " . $where['tpl'];
 			$this->whereTpl = $where['tpl'];
 			$this->whereParams = $where['data'];
+		}elseif(!empty($this->freeWhere)){
+			$where=array();
+			$where['tpl'] = "WHERE " . $this->freeWhere;
+			$this->whereTpl = $where['tpl'];
 		}
 
-		if (isset($this->data) and $this->data != "") {
+		if (!empty($this->data) and $this->data != "") {
 			$where = $this->buildParams($this->data, "data");
 			$this->dataTpl = $where['tpl'];
 			$this->dataParams = $where['data'];
 
 		}
 
-
 		if (isset($this->order) and $this->order != "") {
-			$order = ($this->order == 'DESC') ? 'DESC' : 'ASC';
-			if (isset($order) and $order != "")
-				$this->orderby = " order by {$order}";
+				$this->orderby = " ORDER BY {$this->order}";
 		}
 
 		if (isset($this->limit) and $this->limit != "") {
 			$this->limit = " limit " . $this->limit;
 		}
+
 	}
 
 	/**
@@ -300,6 +304,35 @@ class DbMysql
 
 		return $this;
 
+	}
+	
+	
+	public function transaction($array){
+
+		try {
+			// do stuff
+
+			$this->dbh->beginTransaction(); // start inner transaction, nesting level 2
+
+			foreach ($array as $val) {
+				$stmt = $this->dbh->prepare($val);
+				$stmt->execute();
+			}
+
+			try {
+				// do stuff
+				$this->dbh->commit(); // commits inner transaction, does not start a new one
+				return true;
+			} catch (\Exception $e) {
+				$this->dbh->rollback(); // rolls back inner transaction, does not start a new one
+				return false;
+			}
+
+			$this->dbh->commit(); // commits outer transaction, and immediately starts a new one
+		} catch (\Exception $e) {
+			$this->dbh->rollback(); // rolls back outer transaction, and immediately starts a new one
+			return false;
+		}
 	}
 
 }

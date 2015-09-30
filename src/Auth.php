@@ -29,21 +29,17 @@ class Auth extends AbstractModel
     public static function addSession()
     {
 
+
+        $config=new Config();
         $CharFix=new \Ox\CharFix();
         $data = self::getUserConfig(self::$user);
-        if(!empty($data->rows[0]->remember_token)){
-            $newpass=$data->rows[0]->remember_token;
-        }else{
-            $hash = new \Ox\Hash;
-            $newpass = $hash->make($data->rows['0']->password . date("H:m:d:Y:s"));
-            self::Update(array("remember_token" => $CharFix->char($newpass)), array("id" => self::$user));
-        }
+        $hash = new \Ox\Hash;
+        $newpass = $hash->make($data->rows['0']->password . date("H:m:d:Y:s"));
 
         setcookie("id",self::$user, time() + 60 * 60 * 24 * 30 * 12, "/", ".".Config::$domain);
         setcookie("userneme", $data->rows['0']->email, time() + 60 * 60 * 24 * 30 * 12, "/", ".".Config::$domain);
         setcookie("pass", $newpass, time() + 60 * 60 * 24 * 30 * 12, "/", ".".Config::$domain);
-
-
+        self::Update(array("remember_token"=>$CharFix->char($newpass)),array("id"=>self::$user));
 
         return true;
     }

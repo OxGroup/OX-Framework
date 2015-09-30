@@ -35,7 +35,6 @@ class Hash
     public function verify($input, $existingHash)
     {
         $hash = crypt($input . md5("oxcrm" . $input), $existingHash);
-
         return $hash === $existingHash;
     }
 

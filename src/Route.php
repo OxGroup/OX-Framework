@@ -22,12 +22,14 @@ class Route
 	public $status = "all";
 	public $config;
 	public static $get;
+	public $debug;
 
-	public function __construct()
+	public function __construct($debug=false)
 	{
+		$this->debug=$debug;
 		$this->config = new Config();
 
-		if (class_exists('Auth') and Auth::getStatus() == true) {
+		if (Auth::getStatus() == true) {
 			$this->type = Auth::GiveMeUserSettings()->status;
 		} else {
 			$this->type = "all";
@@ -59,6 +61,7 @@ class Route
 					} else {
 						$controller->view();
 					}
+					die();
 				} else {
 					$controller = "";
 					die ('No extends App');
@@ -105,7 +108,8 @@ class Route
 
 
 		if (($this->type == $this->status or $this->status == "all") and $rootHost == true):
-			//  echo $this->type." - ".$route."<br/>";
+			if($this->debug==true)
+			  echo $this->type." - ".$route."<br/>";
 			if (!empty($funcs)) {
 
 				if ($route == $GET) {
@@ -131,11 +135,12 @@ class Route
 
 				$routePreg = str_replace("/", '\/', $route);
 				$routePreg = str_replace(":num", "[0-9]*", $routePreg);
+				$routePreg = str_replace(":char", "[A-Za-z0-9-]*", $routePreg);
 				$routePreg = str_replace(":img", ".*[.](png|jpg|jpeg|gif)", $routePreg);
-
-
-				//  echo "$route==$GET<br/>";
-				if ((preg_match("/^" . $routePreg . "$/i", $GET) and $route != $GET) or $route == $GET) {
+				$routePreg = "/^" . $routePreg . "$/i";
+				if($this->debug==true)
+				  echo "$routePreg==$GET<br/>";
+				if ((preg_match($routePreg, $GET) and $route != $GET) or $route == $GET) {
 
 					self::$get = explode("/", $GET);
 
@@ -164,6 +169,8 @@ class Route
 	{
 		if (class_exists('\OxApp\models\AuthStuff') and \OxApp\models\AuthStuff::getStatus() == true) {
 			$this->type = "stuff";
+		} elseif (Auth::getStatus() == true) {
+			$this->type = Auth::GiveMeUserSettings()->status;
 		} else {
 			$this->type = "all";
 		}
