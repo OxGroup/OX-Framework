@@ -39,7 +39,7 @@ class Route
 	}
 
 
-	private function FileController($route, $class)
+	private function FileController($route, $class,$method="")
 	{
 
 		$file = "../http/controllers/" . $class . "_controller.php";
@@ -56,10 +56,14 @@ class Route
 				$controller = new  $class();
 				if (is_subclass_of($controller, 'Ox\App')) {
 
-					if (!empty($_POST)) {
-						$controller->post();
-					} else {
-						$controller->view();
+					if(!empty($method)){
+						$controller->$method();
+					}else {
+						if (!empty($_POST)) {
+							$controller->post();
+						} else {
+							$controller->view();
+						}
 					}
 					die();
 				} else {
@@ -147,7 +151,12 @@ class Route
 					self::$get = explode("/", $GET);
 
 					$this->cous++;
-					return $this->FileController($route, $class);
+					$resultRoute=explode("::", $class);
+					if(!empty($resultRoute[1])){
+						return $this->FileController($route, $resultRoute[0], $resultRoute[1]);
+					}else {
+						return $this->FileController($route, $class);
+					}
 
 				} else {
 					return false;
