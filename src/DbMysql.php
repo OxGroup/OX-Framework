@@ -183,14 +183,16 @@ class DbMysql
 			}
 
 			$key = $CharFix->charNumber($key);
-			$dataPocess[$sub . $key] = $val;
+
 
 			if(isset($doubleKeys[$sub . $key])){
 				$doubleKeys[$sub . $key. $cous++] = 0;
-				$tplKey="$sub}{$key}{$cous}";
+				$dataPocess[$sub . $key. $cous] = $val;
+				$tplKey="{$sub}{$key}{$cous}";
 			}else {
+				$dataPocess[$sub . $key] = $val;
 				$doubleKeys[$sub . $key] = 0;
-				$tplKey = "$sub}{$key}";
+				$tplKey = "{$sub}{$key}";
 			}
 			$str = "`{$keyChar['0']}`{$spec}{$specStart}:{$tplKey}{$specStop}";
 			if (!isset($tplProcess)) {
