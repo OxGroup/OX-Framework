@@ -166,6 +166,13 @@ class DbMysql
 						$specStop = ")";
 						$key = $keyChar['0'];
 						break;
+						
+					default:
+						$spec = $keyChar['2']
+						$specStart = "";
+						$specStop = "";
+						$key = $keyChar['0'];
+						break;
 				}
 			} else {
 				$spec = "=";
