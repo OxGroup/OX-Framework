@@ -121,7 +121,7 @@ class DbMysql
 	 */
 	protected function buildParams($params = array(), $sub = "")
 	{
-
+$cous=0;
 		$CharFix = new CharFix();
 		foreach ($params as $key => $val) {
 
@@ -182,7 +182,11 @@ class DbMysql
 			}
 
 			$key = $CharFix->charNumber($key);
-			$dataPocess[$sub . $key] = $val;
+			if(isset($dataPocess[$sub . $key])){
+				$dataPocess[$cous++.$sub . $key] = $val;
+			}else {
+				$dataPocess[$sub . $key] = $val;
+			}
 
 			$str = "`{$keyChar['0']}`{$spec}{$specStart}:{$sub}{$key}{$specStop}";
 			if (!isset($tplProcess)) {
@@ -291,11 +295,6 @@ class DbMysql
 
 				$sqltxt = "SELECT * FROM `" . $this->table . "` {$this->whereTpl} {$orderby} {$limit};";
 				$sth = $this->dbh->prepare($sqltxt);
-
-				print_r($sqltxt);
-				print_r($this->whereParams);
-
-
 				$sth->execute($this->whereParams);
 				$result = $sth->fetchAll(\PDO::FETCH_OBJ);
 				$this->clean();
