@@ -302,6 +302,7 @@ class DbMysql
 				$sqltxt = "SELECT * FROM `" . $this->table . "` {$this->whereTpl} {$orderby} {$limit};";
 				$sth = $this->dbh->prepare($sqltxt);
 
+				print_r($this->whereParams);
 				$sth->execute($this->whereParams);
 				$result = $sth->fetchAll(\PDO::FETCH_OBJ);
 				$this->clean();
