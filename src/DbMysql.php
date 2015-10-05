@@ -121,7 +121,8 @@ class DbMysql
 	 */
 	protected function buildParams($params = array(), $sub = "")
 	{
-$cous=0;
+		$doubleKeys=array();
+		$cous=0;
 		$CharFix = new CharFix();
 		foreach ($params as $key => $val) {
 
@@ -182,13 +183,16 @@ $cous=0;
 			}
 
 			$key = $CharFix->charNumber($key);
-			if(isset($dataPocess[$sub . $key])){
-				$dataPocess[$cous++.$sub . $key] = $val;
-			}else {
-				$dataPocess[$sub . $key] = $val;
-			}
+			$dataPocess[$sub . $key] = $val;
 
-			$str = "`{$keyChar['0']}`{$spec}{$specStart}:{$sub}{$key}{$specStop}";
+			if(isset($doubleKeys[$sub . $key])){
+				$doubleKeys[$sub . $key. $cous++] = 0;
+				$tplKey="$sub}{$key}{$cous}";
+			}else {
+				$doubleKeys[$sub . $key] = 0;
+				$tplKey = "$sub}{$key}";
+			}
+			$str = "`{$keyChar['0']}`{$spec}{$specStart}:{$tplKey}{$specStop}";
 			if (!isset($tplProcess)) {
 				$tplProcess = $str;
 			} else {
@@ -295,6 +299,11 @@ $cous=0;
 
 				$sqltxt = "SELECT * FROM `" . $this->table . "` {$this->whereTpl} {$orderby} {$limit};";
 				$sth = $this->dbh->prepare($sqltxt);
+
+				print_r($sqltxt);
+				print_r($this->whereParams);
+
+
 				$sth->execute($this->whereParams);
 				$result = $sth->fetchAll(\PDO::FETCH_OBJ);
 				$this->clean();
