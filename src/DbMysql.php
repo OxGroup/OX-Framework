@@ -168,7 +168,7 @@ class DbMysql
 						break;
 						
 					default:
-						$spec = $keyChar['2']
+						$spec = $keyChar['2'];
 						$specStart = "";
 						$specStop = "";
 						$key = $keyChar['0'];
