@@ -28,6 +28,7 @@ class Auth extends AbstractModel
 
 	public static function addSession()
 	{
+        self::delSession();
 
 		$CharFix = new \Ox\CharFix();
 		$data = self::getUserConfig(self::$user);
