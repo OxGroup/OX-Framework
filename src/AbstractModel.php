@@ -19,7 +19,7 @@ abstract class AbstractModel
     protected static $table;
 
     /**
-     * @return array|string
+     * @return object|array|string
      *
      */
     public static function findAll($orderBy=array())
@@ -31,6 +31,10 @@ abstract class AbstractModel
         return $mysql->read();
     }
 
+    /**
+     * @return object|array|string
+     *
+     */
     public static function findByColumn($data,$orderBy=array())
     {
         if(!empty($orderBy))
