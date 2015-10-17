@@ -219,7 +219,7 @@ class DbMysql
 	}
 
 	/**
-	 * @return array|string
+	 * @return object|string|array
 	 */
 	public function delete()
 	{
@@ -248,7 +248,7 @@ class DbMysql
 	}
 
 	/**
-	 * @return array|string
+	 * @return object|string|array
 	 */
 	public function create()
 	{
@@ -275,9 +275,12 @@ class DbMysql
 	}
 
 	/**
-	 * @return object|string
+	 * @return object|string|array
 	 * @cous
 	 * @rows
+	 *
+	 * @return string cous
+     * @return object rows
 	 */
 	public function read()
 	{
@@ -324,7 +327,11 @@ class DbMysql
 
 	}
 	
-	
+	/**
+	 * @param $array
+	 *
+	 * @return bool
+	 */
 	public function transaction($array){
 
 		try {
