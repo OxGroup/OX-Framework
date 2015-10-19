@@ -13,6 +13,7 @@ class Auth extends AbstractModel
 	public static $table = "users";
 	public static $userConfig;
 	private static $user, $sess;
+	private $sessions=array();
 
 	public function __construct($user = NULL, $sess = NULL)
 	{
@@ -20,11 +21,25 @@ class Auth extends AbstractModel
 		self::$sess = $sess;
 	}
 
+	protected static function getSession(){
+		$array=array();
+		if(empty($sessions) and isset($_COOKIE)){
+			foreach($_COOKIE as $key=>$val){
+				$array[$key]=$val;
+			}
+			self::$sessions= $array;
+		}else{
+			$array= self::$sessions;
+		}
+		return $array;
+	}
+
 	public static function addSession()
 	{
+		$sessions =self::getSession();
 
-		if(empty(self::$user) and isset($_COOKIE['id'])){
-			self::$user= $_COOKIE['id'];
+		if(empty(self::$user) and isset($sessions['id'])){
+			self::$user= $sessions['id'];
 		}
 		$data = self::getUserConfig(self::$user);
 		if (!empty($data->rows[0]->remember_token)) {
@@ -48,10 +63,12 @@ class Auth extends AbstractModel
 
 	public static function delSession()
 	{
+		$sessions =self::getSession();
 
-		if (isset($_COOKIE['id']) and isset($_COOKIE['username']) and isset($_COOKIE['remember_token'])) {
 
-			self::Update(array("remember_token" => ""), array("id" => $_COOKIE['id']));
+		if (isset($sessions['id']) and isset($sessions['username']) and isset($sessions['remember_token'])) {
+
+			self::Update(array("remember_token" => ""), array("id" => $sessions['id']));
 			self::$user = "";
 			self::$sess = "";
 
@@ -78,15 +95,16 @@ class Auth extends AbstractModel
 
 	public static function getStatus()
 	{
+		$sessions =self::getSession();
 
-		if (isset($_COOKIE['id']) and isset($_COOKIE['username']) and $_COOKIE['id'] != "" and $_COOKIE['username'] != "") {
-			if (empty($_COOKIE['remember_token']))
-				$_COOKIE['remember_token'] = "";
+		if (isset($sessions['id']) and isset($sessions['username']) and $sessions['id'] != "" and $sessions['username'] != "") {
+			if (empty($sessions['remember_token']))
+				$sessions['remember_token'] = "";
 			$user = self::findByColumn(array("id" => $_COOKIE['id']));
-			if (empty($_COOKIE['remember_token'])) {
-				$_COOKIE['remember_token'] = "";
+			if (empty($sessions['remember_token'])) {
+				$sessions['remember_token'] = "";
 			}
-			if (isset($user->rows['0']->remember_token) and isset($user->rows['0']->email) and $user->rows['0']->remember_token == $_COOKIE['remember_token'] and $user->rows['0']->email == $_COOKIE['username']) {
+			if (isset($user->rows['0']->remember_token) and isset($user->rows['0']->email) and $user->rows['0']->remember_token == $sessions['remember_token'] and $user->rows['0']->email == $sessions['username']) {
 				$user->rows['0']->balance = $user->rows['0']->balance - $user->rows['0']->payd;
 				self::$userConfig = $user->rows['0'];
 				return true;
@@ -102,16 +120,16 @@ class Auth extends AbstractModel
 
 	public static function getConfigSess()
 	{
+		$sessions=self::getSession();
 
-
-		if (isset($_COOKIE['id']) and isset($_COOKIE['username']) and !empty($_COOKIE['id']) and !empty($_COOKIE['username'])) {
-			if (empty($_COOKIE['remember_token']))
-				$_COOKIE['remember_token'] = "";
-			$user = self::findByColumn(array("id" => $_COOKIE['id']));
-			if (empty($_COOKIE['remember_token'])) {
-				$_COOKIE['remember_token'] = "";
+		if (isset($sessions['id']) and isset($sessions['username']) and !empty($sessions['id']) and !empty($sessions['username'])) {
+			if (empty($sessions['remember_token']))
+				$sessions['remember_token'] = "";
+			$user = self::findByColumn(array("id" => $sessions['id']));
+			if (empty($sessions['remember_token'])) {
+				$sessions['remember_token'] = "";
 			}
-			if (isset($user->rows['0']->remember_token) and isset($user->rows['0']->email) and $user->rows['0']->remember_token == $_COOKIE['remember_token'] and $user->rows['0']->email == $_COOKIE['username']) {
+			if (isset($user->rows['0']->remember_token) and isset($user->rows['0']->email) and $user->rows['0']->remember_token == $sessions['remember_token'] and $user->rows['0']->email == $sessions['username']) {
 				$user->rows['0']->balance = $user->rows['0']->balance - $user->rows['0']->payd;
 				self::$userConfig = $user->rows['0'];
 				return true;
