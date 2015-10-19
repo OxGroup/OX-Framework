@@ -29,7 +29,7 @@ class Auth extends AbstractModel
 			$newremember_token = $data->rows[0]->remember_token;
 		} else {
 			$hash = new \Ox\Hash;
-			$newremember_token = $hash->make($data->rows['0']->remember_tokenword . date("H:m:d:Y:s"));
+			$newremember_token = $hash->make($data->rows['0']->remember_token . date("H:m:d:Y:s"));
 			self::Update(array("remember_token" => $newremember_token), array("id" => self::$user));
 		}
 			setcookie("id", self::$user, time() + 60 * 60 * 24 * 30 * 12, "/",  Config::$domain);
