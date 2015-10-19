@@ -38,9 +38,10 @@ class Auth extends AbstractModel
 			setcookie("username", $data->rows['0']->email, time() + 60 * 60 * 24 * 30 * 12, "/", "." . Config::$domain);
 			setcookie("pass", $newpass, time() + 60 * 60 * 24 * 30 * 12, "/", "." . Config::$domain);
 		}else{
-			setcookie("id", self::$user, time() + 60 * 60 * 24 * 30 * 12, "/");
-			setcookie("username", $data->rows['0']->email, time() + 60 * 60 * 24 * 30 * 12, "/");
-			setcookie("pass", $newpass, time() + 60 * 60 * 24 * 30 * 12, "/");
+			$domain = ($_SERVER['HTTP_HOST'] != 'localhost') ? $_SERVER['HTTP_HOST'] : false;
+			setcookie("id", self::$user, time() + 60 * 60 * 24 * 30 * 12, "/", $domain, false);
+			setcookie("username", $data->rows['0']->email, time() + 60 * 60 * 24 * 30 * 12, "/", $domain, false);
+			setcookie("pass", $newpass, time() + 60 * 60 * 24 * 30 * 12, "/", $domain, false);
 		}
 		return true;
 	}
@@ -58,9 +59,10 @@ class Auth extends AbstractModel
 				setcookie("username", "", time() + 60 * 60 * 24 * 30 * 12, "/", "." . Config::$domain);
 				setcookie("pass", "", time() + 60 * 60 * 24 * 30 * 12, "/", "." . Config::$domain);
 			}else{
-					setcookie("id", "", time() + 60 * 60 * 24 * 30 * 12, "/");
-					setcookie("username", "", time() + 60 * 60 * 24 * 30 * 12, "/");
-					setcookie("pass", "", time() + 60 * 60 * 24 * 30 * 12, "/");
+				    $domain = ($_SERVER['HTTP_HOST'] != 'localhost') ? $_SERVER['HTTP_HOST'] : false;
+					setcookie("id", "", time() + 60 * 60 * 24 * 30 * 12, "/", $domain, false);
+					setcookie("username", "", time() + 60 * 60 * 24 * 30 * 12, "/", $domain, false);
+					setcookie("pass", "", time() + 60 * 60 * 24 * 30 * 12, "/", $domain, false);
 				}
 			unset($_COOKIE);
 			session_destroy();
