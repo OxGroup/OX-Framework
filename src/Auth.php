@@ -22,8 +22,6 @@ class Auth extends AbstractModel
 
 	public static function addSession()
 	{
-		self::delSession();
-
 		$data = self::getUserConfig(self::$user);
 		if (!empty($data->rows[0]->remember_token)) {
 			$newremember_token = $data->rows[0]->remember_token;
@@ -32,9 +30,9 @@ class Auth extends AbstractModel
 			$newremember_token = $hash->make($data->rows['0']->remember_token . date("H:m:d:Y:s"));
 			self::Update(array("remember_token" => $newremember_token), array("id" => self::$user));
 		}
-			setcookie("id", self::$user, time() + 60 * 60 * 24 * 30 * 12, "/",  Config::$domain);
-			setcookie("username", $data->rows['0']->email, time() + 60 * 60 * 24 * 30 * 12, "/",  Config::$domain);
-			setcookie("remember_token", $newremember_token, time() + 60 * 60 * 24 * 30 * 12, "/", Config::$domain);
+			setcookie("id", self::$user, time() + 60 * 60 * 24 * 30 * 12, "/",  ".".Config::$domain);
+			setcookie("username", $data->rows['0']->email, time() + 60 * 60 * 24 * 30 * 12, "/", "." .Config::$domain);
+			setcookie("remember_token", $newremember_token, time() + 60 * 60 * 24 * 30 * 12, "/", "." .Config::$domain);
 
 		return true;
 	}
@@ -48,9 +46,9 @@ class Auth extends AbstractModel
 			self::$user = "";
 			self::$sess = "";
 
-				setcookie("id", "", time() + 60 * 60 * 24 * 30 * 12, "/",  Config::$domain);
-				setcookie("username", "", time() + 60 * 60 * 24 * 30 * 12, "/", Config::$domain);
-				setcookie("remember_token", "", time() + 60 * 60 * 24 * 30 * 12, "/",  Config::$domain);
+				setcookie("id", "", time() + 60 * 60 * 24 * 30 * 12, "/", "." .Config::$domain);
+				setcookie("username", "", time() + 60 * 60 * 24 * 30 * 12, "/", "." .Config::$domain);
+				setcookie("remember_token", "", time() + 60 * 60 * 24 * 30 * 12, "/", "." .Config::$domain);
 			unset($_COOKIE['id']);
 			unset($_COOKIE['username']);
 			unset($_COOKIE['remember_token']);
