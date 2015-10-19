@@ -11,8 +11,8 @@ namespace Ox;
 class Auth extends AbstractModel
 {
 	public static $table = "users";
-	private static $user, $sess;
 	public static $userConfig;
+	private static $user, $sess;
 
 	public function __construct($user = NULL, $sess = NULL)
 	{
@@ -20,15 +20,9 @@ class Auth extends AbstractModel
 		self::$sess = $sess;
 	}
 
-
-	private static function getUserConfig($id = NULL)
+	public static function addSession($domainAttach = false)
 	{
-		return self::findByColumn(array("id" => $id));
-	}
-
-	public static function addSession()
-	{
-        self::delSession();
+		self::delSession();
 
 		$CharFix = new \Ox\CharFix();
 		$data = self::getUserConfig(self::$user);
@@ -39,95 +33,112 @@ class Auth extends AbstractModel
 			$newpass = $hash->make($data->rows['0']->password . date("H:m:d:Y:s"));
 			self::Update(array("remember_token" => $CharFix->char($newpass)), array("id" => self::$user));
 		}
+		if ($domainAttach == false) {
+			setcookie("id", self::$user, time() + 60 * 60 * 24 * 30 * 12, "/", "." . Config::$domain);
+			setcookie("username", $data->rows['0']->email, time() + 60 * 60 * 24 * 30 * 12, "/", "." . Config::$domain);
+			setcookie("pass", $newpass, time() + 60 * 60 * 24 * 30 * 12, "/", "." . Config::$domain);
+		}else{
+			setcookie("id", self::$user, time() + 60 * 60 * 24 * 30 * 12, "/");
+			setcookie("username", $data->rows['0']->email, time() + 60 * 60 * 24 * 30 * 12, "/");
+			setcookie("pass", $newpass, time() + 60 * 60 * 24 * 30 * 12, "/");
+		}
+		return true;
+	}
 
-		setcookie("id", self::$user, time() + 60 * 60 * 24 * 30 * 12, "/", "." . Config::$domain);
-		setcookie("username", $data->rows['0']->email, time() + 60 * 60 * 24 * 30 * 12, "/", "." . Config::$domain);
-		setcookie("pass", $newpass, time() + 60 * 60 * 24 * 30 * 12, "/", "." . Config::$domain);
+	public static function delSession($domainAttach = false)
+	{
 
-        return true;
-    }
+		if (self::getStatus() == true) {
 
-    public static function delSession(){
+			self::Update(array("remember_token" => ""), array("id" => $_COOKIE['id']));
+			self::$user = "";
+			self::$sess = "";
+			if ($domainAttach == false) {
+				setcookie("id", "", time() + 60 * 60 * 24 * 30 * 12, "/", "." . Config::$domain);
+				setcookie("username", "", time() + 60 * 60 * 24 * 30 * 12, "/", "." . Config::$domain);
+				setcookie("pass", "", time() + 60 * 60 * 24 * 30 * 12, "/", "." . Config::$domain);
+			}else{
+					setcookie("id", "", time() + 60 * 60 * 24 * 30 * 12, "/");
+					setcookie("username", "", time() + 60 * 60 * 24 * 30 * 12, "/");
+					setcookie("pass", "", time() + 60 * 60 * 24 * 30 * 12, "/");
+				}
+			unset($_COOKIE['id']);
+			unset($_COOKIE['username']);
+			unset($_COOKIE['pass']);
+			session_destroy();
+			return true;
+		} else {
+			return false;
+		}
+	}
 
-        if(self::getStatus()==true) {
+	public static function getStatus()
+	{
+		$CharFix = new \Ox\CharFix();
 
-            self::Update(array("remember_token"=>""),array("id"=>$_COOKIE['id']));
-            self::$user="";
-            self::$sess="";
-            setcookie("id","", time() + 60 * 60 * 24 * 30 * 12, "/", ".".Config::$domain);
-            setcookie("username", "", time() + 60 * 60 * 24 * 30 * 12, "/", ".".Config::$domain);
-            setcookie("pass", "", time() + 60 * 60 * 24 * 30 * 12, "/", ".".Config::$domain);
+		if (isset($_COOKIE['id']) and isset($_COOKIE['username']) and $_COOKIE['id'] != "" and $_COOKIE['username'] != "") {
+			if (empty($_COOKIE['pass']))
+				$_COOKIE['pass'] = "";
+			$_COOKIE['pass'] = $CharFix->char($_COOKIE['pass']);
+			$user = self::findByColumn(array("id" => $_COOKIE['id']));
+			if (empty($_COOKIE['pass'])) {
+				$_COOKIE['pass'] = "";
+			}
+			if (isset($user->rows['0']->remember_token) and isset($user->rows['0']->email) and $user->rows['0']->remember_token == $_COOKIE['pass'] and $user->rows['0']->email == $_COOKIE['username']) {
+				$user->rows['0']->balance = $user->rows['0']->balance - $user->rows['0']->payd;
+				self::$userConfig = $user->rows['0'];
+				return true;
+			} else {
 
-            unset($_COOKIE['id']);
-            unset($_COOKIE['username']);
-            unset($_COOKIE['pass']);
-            session_destroy();
-            return true;
-        }else{
-            return false;
-        }
-    }
+				self::$userConfig = false;
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
 
-    public static function getStatus()
-    {
-        $CharFix = new \Ox\CharFix();
+	private static function getUserConfig($id = NULL)
+	{
+		return self::findByColumn(array("id" => $id));
+	}
 
-        if (isset($_COOKIE['id']) and isset($_COOKIE['username']) and $_COOKIE['id']!="" and $_COOKIE['username']!="") {
-            if (empty($_COOKIE['pass'])) $_COOKIE['pass'] = "";
-            $_COOKIE['pass'] = $CharFix->char($_COOKIE['pass']);
-            $user = self::findByColumn(array("id" => $_COOKIE['id']));
-            if (empty($_COOKIE['pass'])) {
-                $_COOKIE['pass'] = "";
-            }
-            if (isset($user->rows['0']->remember_token) and isset($user->rows['0']->email) and $user->rows['0']->remember_token == $_COOKIE['pass'] and $user->rows['0']->email == $_COOKIE['username']) {
-                $user->rows['0']->balance = $user->rows['0']->balance - $user->rows['0']->payd;
-                self::$userConfig = $user->rows['0'];
-                return true;
-            } else {
+	public static function getConfigSess()
+	{
 
-                self::$userConfig = false;
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
+		$CharFix = new \Ox\CharFix();
 
 
-    public static function getConfigSess()
-    {
+		if (isset($_COOKIE['id']) and isset($_COOKIE['username']) and !empty($_COOKIE['id']) and !empty($_COOKIE['username'])) {
+			if (empty($_COOKIE['pass']))
+				$_COOKIE['pass'] = "";
+			$_COOKIE['pass'] = $CharFix->char($_COOKIE['pass']);
+			$user = self::findByColumn(array("id" => $_COOKIE['id']));
+			if (empty($_COOKIE['pass'])) {
+				$_COOKIE['pass'] = "";
+			}
+			if (isset($user->rows['0']->remember_token) and isset($user->rows['0']->email) and $user->rows['0']->remember_token == $_COOKIE['pass'] and $user->rows['0']->email == $_COOKIE['username']) {
+				$user->rows['0']->balance = $user->rows['0']->balance - $user->rows['0']->payd;
+				self::$userConfig = $user->rows['0'];
+				return true;
+			} else {
+				self::$userConfig = false;
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
 
-        $CharFix = new \Ox\CharFix();
-
-
-        if (isset($_COOKIE['id']) and isset($_COOKIE['username']) and !empty($_COOKIE['id']) and !empty($_COOKIE['username'])) {
-            if (empty($_COOKIE['pass'])) $_COOKIE['pass'] = "";
-            $_COOKIE['pass'] = $CharFix->char($_COOKIE['pass']);
-            $user = self::findByColumn(array("id" => $_COOKIE['id']));
-            if (empty($_COOKIE['pass'])) {
-                $_COOKIE['pass'] = "";
-            }
-            if (isset($user->rows['0']->remember_token) and isset($user->rows['0']->email) and $user->rows['0']->remember_token == $_COOKIE['pass'] and $user->rows['0']->email == $_COOKIE['username']) {
-                $user->rows['0']->balance = $user->rows['0']->balance - $user->rows['0']->payd;
-                self::$userConfig = $user->rows['0'];
-                return true;
-            } else {
-                self::$userConfig = false;
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
-
-    public static function GiveMeUserSettings(){
-        $id=self::$userConfig;
-        if(empty($id)) {
-            $id= (object)array();
-            $id->id = 0;
-            $id->name = null;
-        }
-        return $id;
-    }
+	public static function GiveMeUserSettings()
+	{
+		$id = self::$userConfig;
+		if (empty($id)) {
+			$id = (object)array();
+			$id->id = 0;
+			$id->name = null;
+		}
+		return $id;
+	}
 
 }
