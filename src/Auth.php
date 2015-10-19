@@ -48,7 +48,7 @@ class Auth extends AbstractModel
 	public static function delSession($domainAttach = false)
 	{
 
-		if (self::getStatus() == true) {
+		if (isset($_COOKIE['id']) and isset($_COOKIE['username']) and isset($_COOKIE['pass'])) {
 
 			self::Update(array("remember_token" => ""), array("id" => $_COOKIE['id']));
 			self::$user = "";
@@ -62,9 +62,7 @@ class Auth extends AbstractModel
 					setcookie("username", "", time() + 60 * 60 * 24 * 30 * 12, "/");
 					setcookie("pass", "", time() + 60 * 60 * 24 * 30 * 12, "/");
 				}
-			unset($_COOKIE['id']);
-			unset($_COOKIE['username']);
-			unset($_COOKIE['pass']);
+			unset($_COOKIE);
 			session_destroy();
 			return true;
 		} else {
