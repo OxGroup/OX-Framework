@@ -13,7 +13,7 @@ class Auth extends AbstractModel
 	public static $table = "users";
 	public static $userConfig;
 	private static $user, $sess;
-	private $sessions=array();
+	private static $session=array();
 
 	public function __construct($user = NULL, $sess = NULL)
 	{
@@ -27,7 +27,7 @@ class Auth extends AbstractModel
 			foreach($_COOKIE as $key=>$val){
 				$array[$key]=$val;
 			}
-			self::$sessions= $array;
+			self::$session = $array;
 		}else{
 			$array= self::$sessions;
 		}
