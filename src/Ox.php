@@ -31,10 +31,11 @@ class Ox
        // ini_set("session.cookie_domain",".".Config::$domain);
 
         session_start();
+        print_r($_COOKIE);
 
         new \OxApp\controllers\Routes;
 
-        print_r($_COOKIE);
+
     }
 
 }
