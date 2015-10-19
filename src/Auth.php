@@ -25,7 +25,9 @@ class Auth extends AbstractModel
 		setcookie("id", "1", time() + 60 * 60 * 24 * 30 * 12, "/", Config::$domain);
 		setcookie("username", "1", time() + 60 * 60 * 24 * 30 * 12, "/", Config::$domain);
 		setcookie("remember_token", "1", time() + 60 * 60 * 24 * 30 * 12, "/", Config::$domain);
-
+		if(empty(self::$user) and isset($_COOKIE['id'])){
+			self::$user= $_COOKIE['id'];
+		}
 		$data = self::getUserConfig(self::$user);
 		if (!empty($data->rows[0]->remember_token)) {
 			$newremember_token = $data->rows[0]->remember_token;
@@ -51,12 +53,14 @@ class Auth extends AbstractModel
 			self::$user = "";
 			self::$sess = "";
 
-				setcookie("id", " ", time() + 60 * 60 * 24 * 30 * 12, "/", Config::$domain);
-				setcookie("username", " ", time() + 60 * 60 * 24 * 30 * 12, "/", Config::$domain);
-				setcookie("remember_token", " ", time() + 60 * 60 * 24 * 30 * 12, "/", Config::$domain);
-		/*	unset($_COOKIE['id']);
+				setcookie("id", "", time() + 60 * 60 * 24 * 30 * 12, "/", Config::$domain);
+				setcookie("username", "", time() + 60 * 60 * 24 * 30 * 12, "/", Config::$domain);
+				setcookie("remember_token", "", time() + 60 * 60 * 24 * 30 * 12, "/", Config::$domain);
+			/*unset($_COOKIE['id']);
 			unset($_COOKIE['username']);
-			unset($_COOKIE['remember_token']);*/
+			unset($_COOKIE['remember_token']);
+	*/
+			//session_unset();
 
 			//session_destroy();
 			return true;
