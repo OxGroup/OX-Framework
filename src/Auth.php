@@ -51,9 +51,9 @@ class Auth extends AbstractModel
 			self::$user = "";
 			self::$sess = "";
 
-				setcookie("id", "", time() + 60 * 60 * 24 * 30 * 12, "/", Config::$domain);
-				setcookie("username", "", time() + 60 * 60 * 24 * 30 * 12, "/", Config::$domain);
-				setcookie("remember_token", "", time() + 60 * 60 * 24 * 30 * 12, "/", Config::$domain);
+				setcookie("id", " ", time() + 60 * 60 * 24 * 30 * 12, "/", Config::$domain);
+				setcookie("username", " ", time() + 60 * 60 * 24 * 30 * 12, "/", Config::$domain);
+				setcookie("remember_token", " ", time() + 60 * 60 * 24 * 30 * 12, "/", Config::$domain);
 		/*	unset($_COOKIE['id']);
 			unset($_COOKIE['username']);
 			unset($_COOKIE['remember_token']);*/
