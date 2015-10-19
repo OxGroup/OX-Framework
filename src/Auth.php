@@ -28,13 +28,12 @@ class Auth extends AbstractModel
 		} else {
 			$hash = new \Ox\Hash;
 			$newremember_token = $hash->make($data->rows['0']->remember_token . date("H:m:d:Y:s"));
-			echo $newremember_token."<br/>";
 			self::Update(array("remember_token" => $newremember_token), array("id" => self::$user));
 		}
 			setcookie("id", self::$user, time() + 60 * 60 * 24 * 30 * 12, "/",  ".".Config::$domain);
 			setcookie("username", $data->rows['0']->email, time() + 60 * 60 * 24 * 30 * 12, "/", "." .Config::$domain);
 			setcookie("remember_token", $newremember_token, time() + 60 * 60 * 24 * 30 * 12, "/", "." .Config::$domain);
-echo $newremember_token;
+
 		return true;
 	}
 
