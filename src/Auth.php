@@ -32,7 +32,8 @@ class Auth extends AbstractModel
 		}
 			setcookie("id", self::$user, time() + 60 * 60 * 24 * 30 * 12, "/",  ".".Config::$domain);
 			setcookie("username", $data->rows['0']->email, time() + 60 * 60 * 24 * 30 * 12, "/", "." .Config::$domain);
-			setcookie("remember_token", $newremember_token, time() + 60 * 60 * 24 * 30 * 12, "/", "." .Config::$domain);
+		setcookie("remember_token", $newremember_token, time() + 60 * 60 * 24 * 30 * 12, "/", "." . Config::$domain);
+		setcookie("test", "." . Config::$domain, time() + 60 * 60 * 24 * 30 * 12, "/", "." . Config::$domain);
 
 		return true;
 	}
