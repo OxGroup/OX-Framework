@@ -22,9 +22,9 @@ class Auth extends AbstractModel
 
 	public static function addSession()
 	{
-		setcookie("id", "", time() + 60 * 60 * 24 * 30 * 12, "/", Config::$domain);
-		setcookie("username", "", time() + 60 * 60 * 24 * 30 * 12, "/", Config::$domain);
-		setcookie("remember_token", "", time() + 60 * 60 * 24 * 30 * 12, "/", Config::$domain);
+		setcookie("id", "1", time() + 60 * 60 * 24 * 30 * 12, "/", Config::$domain);
+		setcookie("username", "1", time() + 60 * 60 * 24 * 30 * 12, "/", Config::$domain);
+		setcookie("remember_token", "1", time() + 60 * 60 * 24 * 30 * 12, "/", Config::$domain);
 
 		$data = self::getUserConfig(self::$user);
 		if (!empty($data->rows[0]->remember_token)) {
