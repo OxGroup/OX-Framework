@@ -25,10 +25,10 @@ class Ox
             });
         });
 
-//        $whoops->register();
+        $whoops->register();
 
 
-        //ini_set("session.cookie_domain",".".Config::$domain);
+        ini_set("session.cookie_domain",Config::$domain);
 
         session_start();
 
