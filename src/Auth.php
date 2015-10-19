@@ -37,11 +37,11 @@ class Auth extends AbstractModel
 			setcookie("id", self::$user, time() + 60 * 60 * 24 * 30 * 12, "/", "." . Config::$domain);
 			setcookie("username", $data->rows['0']->email, time() + 60 * 60 * 24 * 30 * 12, "/", "." . Config::$domain);
 			setcookie("pass", $newpass, time() + 60 * 60 * 24 * 30 * 12, "/", "." . Config::$domain);
-		}else{
+		} else {
 			$domain = ($_SERVER['HTTP_HOST'] != 'localhost') ? $_SERVER['HTTP_HOST'] : false;
-			setcookie("id", self::$user, time() + 60 * 60 * 24 * 30 * 12, $domain, false);
-			setcookie("username", $data->rows['0']->email, time() + 60 * 60 * 24 * 30 * 12, $domain, false);
-			setcookie("pass", $newpass, time() + 60 * 60 * 24 * 30 * 12, $domain, false);
+			setcookie("id", self::$user, time() + 60 * 60 * 24 * 30 * 12, "/", "." . $domain, false);
+			setcookie("username", $data->rows['0']->email, time() + 60 * 60 * 24 * 30 * 12, "/", "." . $domain, false);
+			setcookie("pass", $newpass, time() + 60 * 60 * 24 * 30 * 12, "/", "." . $domain, false);
 		}
 		return true;
 	}
@@ -58,18 +58,23 @@ class Auth extends AbstractModel
 				setcookie("id", "", time() + 60 * 60 * 24 * 30 * 12, "/", "." . Config::$domain);
 				setcookie("username", "", time() + 60 * 60 * 24 * 30 * 12, "/", "." . Config::$domain);
 				setcookie("pass", "", time() + 60 * 60 * 24 * 30 * 12, "/", "." . Config::$domain);
-			}else{
-				    $domain = ($_SERVER['HTTP_HOST'] != 'localhost') ? $_SERVER['HTTP_HOST'] : false;
-					setcookie("id", "", time() + 60 * 60 * 24 * 30 * 12, $domain, false);
-					setcookie("username", "", time() + 60 * 60 * 24 * 30 * 12, $domain, false);
-					setcookie("pass", "", time() + 60 * 60 * 24 * 30 * 12, $domain, false);
-				}
+			} else {
+				$domain = ($_SERVER['HTTP_HOST'] != 'localhost') ? $_SERVER['HTTP_HOST'] : false;
+				setcookie("id", "", time() + 60 * 60 * 24 * 30 * 12, "/", "." . $domain, false);
+				setcookie("username", "", time() + 60 * 60 * 24 * 30 * 12, "/", "." . $domain, false);
+				setcookie("pass", "", time() + 60 * 60 * 24 * 30 * 12, "/", "." . $domain, false);
+			}
 			unset($_COOKIE);
 			session_destroy();
 			return true;
 		} else {
 			return false;
 		}
+	}
+
+	private static function getUserConfig($id = NULL)
+	{
+		return self::findByColumn(array("id" => $id));
 	}
 
 	public static function getStatus()
@@ -96,11 +101,6 @@ class Auth extends AbstractModel
 		} else {
 			return false;
 		}
-	}
-
-	private static function getUserConfig($id = NULL)
-	{
-		return self::findByColumn(array("id" => $id));
 	}
 
 	public static function getConfigSess()
