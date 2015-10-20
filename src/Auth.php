@@ -39,7 +39,7 @@ class Auth extends AbstractModel
 		$response->headers->setCookie(new Cookie('id', $user, time() + 60 * 60 * 24 * 30 * 12, "/"));
 		$response->headers->setCookie(new Cookie('username', $data->rows['0']->email, time() + 60 * 60 * 24 * 30 * 12, "/"));
 		$response->headers->setCookie(new Cookie('remember_token', $newremember_token, time() + 60 * 60 * 24 * 30 * 12, "/"));
-
+		$response->redirect("/");
 		return $response->send();
 	}
 
@@ -49,8 +49,7 @@ class Auth extends AbstractModel
 		$response->headers->clearCookie('id', '');
 		$response->headers->clearCookie('username', '');
 		$response->headers->clearCookie('remember_token', '');
-
-
+		$response->redirect("/");
 		return $response->send();
 	}
 
