@@ -20,7 +20,7 @@ class Auth extends AbstractModel
 	public static function addSession($user)
 	{
 echo "1";
-		self::delSession();
+		//self::delSession();
 		echo "2";
 		$data = self::getUserConfig($user);
 		echo "3";
