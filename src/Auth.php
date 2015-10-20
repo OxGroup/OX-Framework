@@ -8,9 +8,9 @@
 
 namespace Ox;
 
-use Symfony\Component\HttpFoundation\Cookie;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use \Symfony\Component\HttpFoundation\Cookie;
+use \Symfony\Component\HttpFoundation\Request;
+use \Symfony\Component\HttpFoundation\Response;
 
 class Auth extends AbstractModel
 {
@@ -19,28 +19,28 @@ class Auth extends AbstractModel
 
 	public static function addSession($user)
 	{
-echo "1";
+
 		//self::delSession();
-		echo "2";
+
 		$data = self::getUserConfig($user);
-		echo "3";
+
 		if (!empty($data->rows[0]->remember_token)) {
 			$newremember_token = $data->rows[0]->remember_token;
-			echo "4";
+
 		} else {
-			echo "5";
+
 			$hash = new \Ox\Hash;
 			$newremember_token = $hash->make($data->rows['0']->remember_token . date("H:m:d:Y:s"));
 			self::Update(array("remember_token" => $newremember_token), array("id" => $user));
-			echo "6";
+
 		}
-		echo "7";
+		echo "1";
 		$response = new Response();
 		$response->headers->setCookie(new Cookie('id', $user, time() + 60 * 60 * 24 * 30 * 12, "/"));
 		$response->headers->setCookie(new Cookie('username', $data->rows['0']->email, time() + 60 * 60 * 24 * 30 * 12, "/"));
 		$response->headers->setCookie(new Cookie('remember_token', $newremember_token, time() + 60 * 60 * 24 * 30 * 12, "/"));
 		$response->send();
-		echo "8";
+		echo "2";
 		return true;
 	}
 
