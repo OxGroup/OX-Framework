@@ -61,7 +61,7 @@ class Route
 			die ($file . ' Controller Not Found');
 		} else {
 			$this->cous++;
-			$class .= "_controller";
+			$class .= "Controller";
 
 			try {
 				$class = "\\OxApp\\controllers\\" . $class;
