@@ -12,18 +12,27 @@
  */
 namespace Ox;
 
-
+/**
+ * Class Route
+ * @package Ox
+ */
 class Route
 {
+
 	public $route;
 	public $class;
 	public $cous = 0;
 	public $setHost = "all";
-	public $status = "all";
+	public $forUser = "all";
 	public $config;
+	public $ContentType="";
 	public static $get;
 	public $debug;
 
+	/**
+	 * Route constructor.
+	 * @param bool|false $debug
+	 */
 	public function __construct($debug=false)
 	{
 		$this->debug=$debug;
@@ -38,7 +47,11 @@ class Route
 
 	}
 
-
+	/**
+	 * @param $route
+	 * @param $class
+	 * @param string $method
+	 */
 	private function FileController($route, $class,$method="")
 	{
 
@@ -55,6 +68,9 @@ class Route
 
 				$controller = new  $class();
 				if (is_subclass_of($controller, 'Ox\App')) {
+					if(!empty($this->ContentType))
+						header('Content-Type: '. $this->ContentType);
+
 
 					if(!empty($method)){
 						$controller->$method();
@@ -77,7 +93,13 @@ class Route
 		}
 	}
 
-
+	/**
+	 * @param $route
+	 * @param $class
+	 * @param string $funcs
+	 * @param string $location
+	 * @return bool|void
+	 */
 	public function get($route, $class, $funcs = "", $location = "")
 	{
 		if (!isset($_GET['q']))
@@ -111,7 +133,7 @@ class Route
 		}
 
 
-		if (($this->type == $this->status or $this->status == "all") and $rootHost == true):
+		if (($this->type == $this->forUser or $this->forUser == "all") and $rootHost == true):
 			if($this->debug==true)
 			  echo $this->type." - ".$route."<br/>";
 			if (!empty($funcs)) {
@@ -171,11 +193,17 @@ class Route
 
 	}
 
+	/**
+	 * @param $status
+	 */
 	public function setUser($status)
 	{
-		$this->status = $status;
+		$this->forUser = $status;
 	}
 
+	/**
+	 * @param $subdomain
+	 */
 	public function setSubdomain($subdomain)
 	{
 		if (class_exists('\OxApp\models\AuthStuff') and \OxApp\models\AuthStuff::getStatus() == true) {

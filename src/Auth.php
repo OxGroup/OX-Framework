@@ -6,17 +6,26 @@
  * Time: 14:36
  */
 
-namespace Ox;
+namespace Ox\models;
 
+use Ox\AbstractModel;
 use \Symfony\Component\HttpFoundation\Cookie;
 use \Symfony\Component\HttpFoundation\Request;
 use \Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Class Auth
+ * @package Ox\models
+ */
 class Auth extends AbstractModel
 {
-	public static $table = "users";
+	protected static $table = "users";
 	protected static $userConfig;
 
+	/**
+	 * @param $user
+	 * @return bool
+	 */
 	public static function addSession($user)
 	{
 
@@ -39,25 +48,34 @@ class Auth extends AbstractModel
 		$response->headers->setCookie(new Cookie('id', $user, time() + 60 * 60 * 24 * 30 * 12, "/"));
 		$response->headers->setCookie(new Cookie('username', $data->rows['0']->email, time() + 60 * 60 * 24 * 30 * 12, "/"));
 		$response->headers->setCookie(new Cookie('remember_token', $newremember_token, time() + 60 * 60 * 24 * 30 * 12, "/"));
-		$response->isRedirect("/");
-		return $response->send();
+		$response->sendHeaders();
+		return true;
 	}
 
+	/**
+	 * @return Response
+	 */
 	public static function delSession()
 	{
 		$response = new Response();
 		$response->headers->clearCookie('id', '');
 		$response->headers->clearCookie('username', '');
 		$response->headers->clearCookie('remember_token', '');
-		$response->isRedirect("/");
-		return $response->send();
+		return $response->sendHeaders();
 	}
 
+	/**
+	 * @param null $id
+	 * @return array|object|string
+	 */
 	private static function getUserConfig($id = NULL)
 	{
 		return self::findByColumn(array("id" => $id));
 	}
 
+	/**
+	 * @return bool
+	 */
 	public static function getStatus()
 	{
 		$cookie = new Request($_COOKIE);
@@ -74,6 +92,9 @@ class Auth extends AbstractModel
 		}
 	}
 
+	/**
+	 * @return bool
+	 */
 	public static function getConfigSess()
 	{
 		$cookie = new Request($_COOKIE);
@@ -90,6 +111,9 @@ class Auth extends AbstractModel
 		}
 	}
 
+	/**
+	 * @return object
+	 */
 	public static function GiveMeUserSettings()
 	{
 		$id = self::$userConfig;
