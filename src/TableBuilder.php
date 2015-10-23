@@ -81,7 +81,8 @@ class TableBuilder
     {
 
         if ($this->th != "") {
-            if ($this->thoption != "") $this->thoption = " " . $this->thoption;
+            if ($this->thoption != "")
+                $this->thoption = " " . $this->thoption;
             $this->th = "<thead{$this->thoption}>\n" . $this->th . "</thead>";
             $this->tb = "<tbody{$this->tboption}>\n" . $this->tb . "</tbody>";
         }

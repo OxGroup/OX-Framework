@@ -14,207 +14,210 @@ namespace Ox;
 
 /**
  * Class Route
+ *
  * @package Ox
  */
 class Route
 {
 
-	public $route;
-	public $class;
-	public $cous = 0;
-	public $setHost = "all";
-	public $forUser = "all";
-	public $config;
-	public $ContentType="";
-	public static $get;
-	public $debug;
+    public $route;
+    public $class;
+    public $cous = 0;
+    public $setHost = "all";
+    public $forUser = "all";
+    public $config;
+    public $ContentType = "";
+    public static $get;
+    public $debug;
 
-	/**
-	 * Route constructor.
-	 * @param bool|false $debug
-	 */
-	public function __construct($debug=false)
-	{
-		$this->debug=$debug;
-		$this->config = new Config();
+    /**
+     * Route constructor.
+     *
+     * @param bool|false $debug
+     */
+    public function __construct($debug = false)
+    {
+        $this->debug = $debug;
+        $this->config = new Config();
 
-		if (Auth::getStatus() == true) {
-			$this->type = Auth::GiveMeUserSettings()->status;
-		} else {
-			$this->type = "all";
-		}
-
-
-	}
-
-	/**
-	 * @param $route
-	 * @param $class
-	 * @param string $method
-	 */
-	private function FileController($route, $class,$method="")
-	{
-
-		$file = "../http/controllers/" . $class . "_controller.php";
-		$file = str_replace("\\", "/", $file);
-		if (is_readable($file) == false) {
-			die ($file . ' Controller Not Found');
-		} else {
-			$this->cous++;
-			$class .= "Controller";
-
-			try {
-				$class = "\\OxApp\\controllers\\" . $class;
-
-				$controller = new  $class();
-				if (is_subclass_of($controller, 'Ox\App')) {
-					if(!empty($this->ContentType))
-						header('Content-Type: '. $this->ContentType);
+        if (Auth::getStatus() == true) {
+            $this->type = Auth::GiveMeUserSettings()->status;
+        } else {
+            $this->type = "all";
+        }
 
 
-					if(!empty($method)){
-						$controller->$method();
-					}else {
-						if (!empty($_POST)) {
-							$controller->post();
-						} else {
-							$controller->view();
-						}
-					}
-					die();
-				} else {
-					$controller = "";
-					die ('No extends App');
-				}
-			} catch (\Exception $e) {
-				// catch( Exception $e ) will give no warning, but will not catch Exception
-				echo "ERROR: $e";
-			}
-		}
-	}
+    }
 
-	/**
-	 * @param $route
-	 * @param $class
-	 * @param string $funcs
-	 * @param string $location
-	 * @return bool|void
-	 */
-	public function get($route, $class, $funcs = "", $location = "")
-	{
-		if (!isset($_GET['q']))
-			$_GET['q'] = "/";
-		$GET = $_GET['q'];
-		if (substr($GET, -1) != "/")
-			$GET .= "/";
-		if ($GET{0} != "/")
-			$GET = "/" . $GET;
+    /**
+     * @param        $route
+     * @param        $class
+     * @param string $method
+     */
+    private function FileController($route, $class, $method = "")
+    {
 
-		if (substr($route, -1) != "/")
-			$route .= "/";
-		if ($route{0} != "/")
-			$route = "/" . $route;
+        $file = "../http/controllers/" . $class . "_controller.php";
+        $file = str_replace("\\", "/", $file);
+        if (is_readable($file) == false) {
+            die ($file . ' Controller Not Found');
+        } else {
+            $this->cous++;
+            $class .= "Controller";
 
-		if ($this->setHost != "n/a" and $this->setHost != "sub" and $this->setHost != "all") {
-			$GET = $this->config->subDomain() . $GET;
-			$route = $this->setHost . $route;
-		}
+            try {
+                $class = "\\OxApp\\controllers\\" . $class;
 
-		$rootHost = true;
-		if ($this->setHost == "sub") {
-			if ($this->config->subDomain() == "") {
-				$rootHost = false;
-			}
-		} else {
-			$rootHost = $this->config->checkHost();
-		}
-		if ($this->setHost == "all") {
-			$rootHost = true;
-		}
+                $controller = new  $class();
+                if (is_subclass_of($controller, 'Ox\App')) {
+                    if (!empty($this->ContentType))
+                        header('Content-Type: ' . $this->ContentType);
 
 
-		if (($this->type == $this->forUser or $this->forUser == "all") and $rootHost == true):
-			if($this->debug==true)
-			  echo $this->type." - ".$route."<br/>";
-			if (!empty($funcs)) {
+                    if (!empty($method)) {
+                        $controller->$method();
+                    } else {
+                        if (!empty($_POST)) {
+                            $controller->post();
+                        } else {
+                            $controller->view();
+                        }
+                    }
+                    die();
+                } else {
+                    $controller = "";
+                    die ('No extends App');
+                }
+            } catch (\Exception $e) {
+                // catch( Exception $e ) will give no warning, but will not catch Exception
+                echo "ERROR: $e";
+            }
+        }
+    }
 
-				if ($route == $GET) {
-					$this->cous++;
-					$func = explode(":", $funcs);
-					if (isset($func[1])) {
-						if (file_exists(__DIR__ . "/../../../../http/models" . $func[0] . ".php")) {
-							$object = "\\OxApp\\models\\" . $func[0];
-						} else {
-							$object = "\\Ox\\" . $func[0];
-						}
-						$$func[0] = new $object;
-						$$func[0]->$func[1]();
-					} else {
-						$func[0]();
-					}
+    /**
+     * @param        $route
+     * @param        $class
+     * @param string $funcs
+     * @param string $location
+     *
+     * @return bool|void
+     */
+    public function get($route, $class, $funcs = "", $location = "")
+    {
+        if (!isset($_GET['q']))
+            $_GET['q'] = "/";
+        $GET = $_GET['q'];
+        if (substr($GET, -1) != "/")
+            $GET .= "/";
+        if ($GET{0} != "/")
+            $GET = "/" . $GET;
 
-				} else {
-					return false;
-				}
-			} else {
+        if (substr($route, -1) != "/")
+            $route .= "/";
+        if ($route{0} != "/")
+            $route = "/" . $route;
+
+        if ($this->setHost != "n/a" and $this->setHost != "sub" and $this->setHost != "all") {
+            $GET = $this->config->subDomain() . $GET;
+            $route = $this->setHost . $route;
+        }
+
+        $rootHost = true;
+        if ($this->setHost == "sub") {
+            if ($this->config->subDomain() == "") {
+                $rootHost = false;
+            }
+        } else {
+            $rootHost = $this->config->checkHost();
+        }
+        if ($this->setHost == "all") {
+            $rootHost = true;
+        }
 
 
-				$routePreg = str_replace("/", '\/', $route);
-				$routePreg = str_replace(":num", "[0-9]*", $routePreg);
-				$routePreg = str_replace(":char", "[A-Za-z]*", $routePreg);
-				$routePreg = str_replace(":charNum", "[A-Za-z0-9-]*", $routePreg);
-				$routePreg = str_replace(":text", "[A-Za-z0-9- .,:;]*", $routePreg);
-				$routePreg = str_replace(":img", ".*[.](png|jpg|jpeg|gif)", $routePreg);
-				$routePreg = "/^" . $routePreg . "$/i";
-				if($this->debug==true)
-				  echo "$routePreg==$GET<br/>";
-				if ((preg_match($routePreg, $GET) and $route != $GET) or $route == $GET) {
+        if (($this->type == $this->forUser or $this->forUser == "all") and $rootHost == true):
+            if ($this->debug == true)
+                echo $this->type . " - " . $route . "<br/>";
+            if (!empty($funcs)) {
 
-					self::$get = explode("/", $GET);
+                if ($route == $GET) {
+                    $this->cous++;
+                    $func = explode(":", $funcs);
+                    if (isset($func[1])) {
+                        if (file_exists(__DIR__ . "/../../../../http/models" . $func[0] . ".php")) {
+                            $object = "\\OxApp\\models\\" . $func[0];
+                        } else {
+                            $object = "\\Ox\\" . $func[0];
+                        }
+                        $$func[0] = new $object;
+                        $$func[0]->$func[1]();
+                    } else {
+                        $func[0]();
+                    }
 
-					$this->cous++;
-					$resultRoute=explode("::", $class);
-					if(!empty($resultRoute[1])){
-						return $this->FileController($route, $resultRoute[0], $resultRoute[1]);
-					}else {
-						return $this->FileController($route, $class);
-					}
+                } else {
+                    return false;
+                }
+            } else {
 
-				} else {
-					return false;
-				}
-			}
-			if (!empty($location)) {
-				$this->cous++;
-				header("Location: " . $location);
-			}
 
-		endif;
+                $routePreg = str_replace("/", '\/', $route);
+                $routePreg = str_replace(":num", "[0-9]*", $routePreg);
+                $routePreg = str_replace(":char", "[A-Za-z]*", $routePreg);
+                $routePreg = str_replace(":charNum", "[A-Za-z0-9-]*", $routePreg);
+                $routePreg = str_replace(":text", "[A-Za-z0-9- .,:;]*", $routePreg);
+                $routePreg = str_replace(":img", ".*[.](png|jpg|jpeg|gif)", $routePreg);
+                $routePreg = "/^" . $routePreg . "$/i";
+                if ($this->debug == true)
+                    echo "$routePreg==$GET<br/>";
+                if ((preg_match($routePreg, $GET) and $route != $GET) or $route == $GET) {
 
-	}
+                    self::$get = explode("/", $GET);
 
-	/**
-	 * @param $status
-	 */
-	public function setUser($status)
-	{
-		$this->forUser = $status;
-	}
+                    $this->cous++;
+                    $resultRoute = explode("::", $class);
+                    if (!empty($resultRoute[1])) {
+                        return $this->FileController($route, $resultRoute[0], $resultRoute[1]);
+                    } else {
+                        return $this->FileController($route, $class);
+                    }
 
-	/**
-	 * @param $subdomain
-	 */
-	public function setSubdomain($subdomain)
-	{
-		if (class_exists('\OxApp\models\AuthStuff') and \OxApp\models\AuthStuff::getStatus() == true) {
-			$this->type = "stuff";
-		} elseif (Auth::getStatus() == true) {
-			$this->type = Auth::GiveMeUserSettings()->status;
-		} else {
-			$this->type = "all";
-		}
-		$this->setHost = $subdomain;
-	}
+                } else {
+                    return false;
+                }
+            }
+            if (!empty($location)) {
+                $this->cous++;
+                header("Location: " . $location);
+            }
+
+        endif;
+
+    }
+
+    /**
+     * @param $status
+     */
+    public function setUser($status)
+    {
+        $this->forUser = $status;
+    }
+
+    /**
+     * @param $subdomain
+     */
+    public function setSubdomain($subdomain)
+    {
+        if (class_exists('\OxApp\models\AuthStuff') and \OxApp\models\AuthStuff::getStatus() == true) {
+            $this->type = "stuff";
+        } elseif (Auth::getStatus() == true) {
+            $this->type = Auth::GiveMeUserSettings()->status;
+        } else {
+            $this->type = "all";
+        }
+        $this->setHost = $subdomain;
+    }
 
 
 }

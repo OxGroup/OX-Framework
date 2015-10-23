@@ -11,7 +11,8 @@ namespace Ox;
 
 class Ox
 {
-    public static function start(){
+    public static function start()
+    {
 
         $whoops = new \Whoops\Run;
         $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
@@ -28,7 +29,7 @@ class Ox
         $whoops->register();
 
 
-       // ini_set("session.cookie_domain",".".Config::$domain);
+        // ini_set("session.cookie_domain",".".Config::$domain);
 
         session_start();
 

@@ -6,8 +6,10 @@
  * Time: 21:30
  */
 namespace Ox;
-interface IController {
+interface IController
+{
     public function view();
+
     public function post();
 }
 

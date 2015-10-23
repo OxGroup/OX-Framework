@@ -12,7 +12,9 @@
  * Class AbstractModel
  */
 namespace Ox;
+
 use \Ox\DbMysql;
+
 abstract class AbstractModel
 
 {
@@ -23,12 +25,12 @@ abstract class AbstractModel
      *
      * @return object|string|array
      */
-    public static function findAll($orderBy=array())
+    public static function findAll($orderBy = array())
     {
         if (!empty($orderBy))
             $orderBy = array("order" => $orderBy);
         $mysql = new DbMysql();
-        $mysql->cfg = array("table" => static::$table)+ $orderBy;
+        $mysql->cfg = array("table" => static::$table) + $orderBy;
         return $mysql->read();
     }
 
@@ -38,12 +40,12 @@ abstract class AbstractModel
      *
      * @return object|string|array
      */
-    public static function findByColumn($data,$orderBy=array())
+    public static function findByColumn($data, $orderBy = array())
     {
-        if(!empty($orderBy))
-            $orderBy=array("order" => $orderBy);
+        if (!empty($orderBy))
+            $orderBy = array("order" => $orderBy);
         $mysql = new DbMysql();
-        $mysql->cfg = array("table" => static::$table,"where"=>$data)+ $orderBy;
+        $mysql->cfg = array("table" => static::$table, "where" => $data) + $orderBy;
         return $mysql->read();
     }
 
@@ -56,12 +58,13 @@ abstract class AbstractModel
     {
         $mysql = new DbMysql();
         $mysql->cfg = array("table" => static::$table);
-        $mysql->freeWhere=$data;
+        $mysql->freeWhere = $data;
         return $mysql->read();
     }
 
     /**
      * @param $data
+     *
      * @return array|string
      */
     public static function Add($data)
@@ -74,9 +77,10 @@ abstract class AbstractModel
     /**
      * @param $data
      * @param $where
+     *
      * @return array|string
      */
-    public static function Update($data,$where)
+    public static function Update($data, $where)
     {
         $mysql = new DbMysql();
         $mysql->cfg = array("table" => static::$table, "data" => $data, "where" => $where);
@@ -85,6 +89,7 @@ abstract class AbstractModel
 
     /**
      * @param $where
+     *
      * @return array|string
      */
     public static function Delete($where)
