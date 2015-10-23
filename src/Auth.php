@@ -6,7 +6,7 @@
  * Time: 14:36
  */
 
-namespace Ox\models;
+namespace Ox;
 
 use Ox\AbstractModel;
 use \Symfony\Component\HttpFoundation\Cookie;
