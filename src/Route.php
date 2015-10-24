@@ -57,7 +57,7 @@ class Route
     private function FileController($route, $class, $method = "")
     {
 
-        $file = "../http/controllers/" . $class . "_controller.php";
+        $file = "../http/controllers/" . $class . "Controller.php";
         $file = str_replace("\\", "/", $file);
         if (is_readable($file) == false) {
             die ($file . ' Controller Not Found');
