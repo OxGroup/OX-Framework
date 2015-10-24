@@ -19,13 +19,13 @@ namespace Ox;
  */
 class Route
 {
-
-    public $route;
-    public $class;
+    protected $route;
+    protected $class;
     public $cous = 0;
+    public $auth = "\Ox\Auth";
     public $setHost = "all";
     public $forUser = "all";
-    public $config;
+    protected $config;
     public $ContentType = "";
     public static $get;
     public $debug;
@@ -39,9 +39,9 @@ class Route
     {
         $this->debug = $debug;
         $this->config = new Config();
-
-        if (Auth::getStatus() == true) {
-            $this->type = Auth::GiveMeUserSettings()->status;
+        $this->auth=new $this->auth;
+        if ($this->auth->getStatus() == true) {
+            $this->type = $this->auth->GiveMeUserSettings()->status;
         } else {
             $this->type = "all";
         }
@@ -249,8 +249,8 @@ class Route
     {
         if (class_exists('\OxApp\models\AuthStuff') and \OxApp\models\AuthStuff::getStatus() == true) {
             $this->type = "stuff";
-        } elseif (Auth::getStatus() == true) {
-            $this->type = Auth::GiveMeUserSettings()->status;
+        } elseif ($this->auth->getStatus() == true) {
+            $this->type = $this->auth->GiveMeUserSettings()->status;
         } else {
             $this->type = "all";
         }
