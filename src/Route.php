@@ -123,7 +123,15 @@ class Route
     {
         if (!isset($_GET['q']))
             $_GET['q'] = "/";
-        $GET = $_GET['q'];
+
+        if(!empty($_SERVER['REQUEST_URI'])){
+            $GET = $_SERVER['REQUEST_URI'];
+        }else if (!empty($_SERVER['REDIRECT_URL'])){
+            $GET = $_SERVER['REDIRECT_URL'];
+        }else {
+            $GET = $_GET['q'];
+        }
+
         if (substr($GET, -1) != "/")
             $GET .= "/";
         if ($GET{0} != "/")
@@ -176,7 +184,7 @@ class Route
                     return false;
                 }
             } else {
-                
+
                 $setGetRoutes = explode("/", $route);
                 if (!empty($setGetRoutes)) {
                     $getResut=explode("/",$GET);
@@ -192,11 +200,11 @@ class Route
                     }
                 }
 
-                $routePreg = str_replace(":num", "[0-9]*", $route);
-                $routePreg = str_replace(":char", "[A-Za-z]*", $routePreg);
-                $routePreg = str_replace(":charNum", "[A-Za-z0-9-]*", $routePreg);
-                $routePreg = str_replace(":text", "[A-Za-z0-9- .,:;]*", $routePreg);
-                $routePreg = str_replace(":img", ".*[.](png|jpg|jpeg|gif)", $routePreg);
+                $routePreg = str_replace(":num", "[0-9]*|", $route);
+                $routePreg = str_replace(":char", "[A-Za-z]*|", $routePreg);
+                $routePreg = str_replace(":charNum", "[A-Za-z0-9-]*|", $routePreg);
+                $routePreg = str_replace(":text", "[A-Za-z0-9- .,:;]*|", $routePreg);
+                $routePreg = str_replace(":img", ".*[.](png|jpg|jpeg|gif)|", $routePreg);
                 $routePreg = str_replace("/", '\/', $routePreg);
                 $routePreg = "/^" . $routePreg . "$/i";
                 if ($this->debug == true)
