@@ -75,7 +75,12 @@ class Route
 
 
                     if (!empty($method)) {
-                        $controller->$method();
+                          try {
+                            $controller->$method();
+                        } catch (\Exception $e) {
+                            // catch( Exception $e ) will give no warning, but will not catch Exception
+                            echo "ERROR: $e";
+                        }
                     } else {
                         if (!empty($_POST)) {
                             $controller->post();
