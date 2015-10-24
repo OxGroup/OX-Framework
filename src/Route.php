@@ -64,7 +64,6 @@ class Route
         } else {
             $this->cous++;
             $class .= "Controller";
-
             try {
                 $class = "\\OxApp\\controllers\\" . $class;
 
@@ -75,12 +74,29 @@ class Route
 
 
                     if (!empty($method)) {
+                        try {
                             $controller->$method();
+                        } catch (\Exception $e) {
+                            // catch( Exception $e ) will give no warning, but will not catch Exception
+                            echo "ERROR: $e";
+                        }
+
                     } else {
                         if (!empty($_POST)) {
-                            $controller->post();
+                            try {
+                                $controller->post();
+                            } catch (\Exception $e) {
+                                // catch( Exception $e ) will give no warning, but will not catch Exception
+                                echo "ERROR: $e";
+                            }
+
                         } else {
-                            $controller->view();
+                            try {
+                                $controller->view();
+                            } catch (\Exception $e) {
+                                // catch( Exception $e ) will give no warning, but will not catch Exception
+                                echo "ERROR: $e";
+                            }
                         }
                     }
                     die();
@@ -160,14 +176,28 @@ class Route
                     return false;
                 }
             } else {
+                
+                $setGetRoutes = explode("/", $route);
+                if (!empty($setGetRoutes)) {
+                    $getResut=explode("/",$GET);
+                    $i=0;
+                    foreach ($setGetRoutes as $rout) {
+                        $testRoute = explode("=>", $rout);
+                        if (!empty($testRoute[1]) and isset($getResut[$i])) {
+                            $_GET[$testRoute[1]] = $getResut[$i];
+                            $_REQUEST[$testRoute[1]] = $getResut[$i];
+                            $route = str_replace("{$testRoute[0]}=>$testRoute[1]", "$testRoute[0]", $route);
+                        }
+                        $i++;
+                    }
+                }
 
-
-                $routePreg = str_replace("/", '\/', $route);
-                $routePreg = str_replace(":num", "[0-9]*", $routePreg);
+                $routePreg = str_replace(":num", "[0-9]*", $route);
                 $routePreg = str_replace(":char", "[A-Za-z]*", $routePreg);
                 $routePreg = str_replace(":charNum", "[A-Za-z0-9-]*", $routePreg);
                 $routePreg = str_replace(":text", "[A-Za-z0-9- .,:;]*", $routePreg);
                 $routePreg = str_replace(":img", ".*[.](png|jpg|jpeg|gif)", $routePreg);
+                $routePreg = str_replace("/", '\/', $routePreg);
                 $routePreg = "/^" . $routePreg . "$/i";
                 if ($this->debug == true)
                     echo "$routePreg==$GET<br/>";
