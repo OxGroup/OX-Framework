@@ -132,6 +132,11 @@ class Route
             $GET = $_GET['q'];
         }
 
+        $check=explode("?",$GET);
+        if(isset($check[1])){
+            $GET=$check[0];
+        }
+        
         if (substr($GET, -1) != "/")
             $GET .= "/";
         if ($GET{0} != "/")
