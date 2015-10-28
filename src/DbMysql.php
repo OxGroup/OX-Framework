@@ -243,6 +243,7 @@ class DbMysql
             $sth = $this->dbh->prepare($sqltxt);
             $sth->execute($this->whereParams);
             $this->clean();
+            $result="";
             return (object)array("cous" => $sth->rowCount(), "rows" => $result, "sqlquery" => $sqltxt, "errorInfo" => $sth->errorInfo());
 
         }
