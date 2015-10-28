@@ -140,12 +140,13 @@ class Route
                     foreach ($setGetRoutes as $rout) {
                         $testRoute = explode("=>", $rout);
                         if (!empty($testRoute[1]) and isset($getResut[$i])) {
-                            $_GET[$testRoute[1]] = $getResut[$i];
-                            $_REQUEST[$testRoute[1]] = $getResut[$i];
+                            $SetGet[$testRoute[1]] = $getResut[$i];
                             $route = str_replace("{$testRoute[0]}=>$testRoute[1]", "$testRoute[0]", $route);
                         }
                         $i++;
                     }
+                }else{
+                    $SetGet="";
                 }
 
                 $routePreg = str_replace(":num", "[0-9]*", $route);
@@ -158,6 +159,10 @@ class Route
                 if ($this->debug == true)
                     echo "$routePreg==$GET<br/>";
                 if ((preg_match($routePreg, $GET) and $route != $GET) or $route == $GET) {
+                    if(!empty($SetGet)){
+                    $_GET=$setGet;
+                    $_REQUEST=$setGet;
+                    }
 
                     self::$get = explode("/", $GET);
 
