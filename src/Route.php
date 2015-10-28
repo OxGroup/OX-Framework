@@ -25,6 +25,7 @@ class Route
     public $auth = "\Ox\Auth";
     public $setHost = "all";
     public $forUser = "all";
+    public $forHostName="all";
     protected $config;
     public $ContentType = "";
     public static $get;
@@ -165,7 +166,11 @@ class Route
         }
 
 
-        if (($this->type == $this->forUser or $this->forUser == "all") and $rootHost == true):
+        $hostName = true;
+        if ($this->forHostName != "all" and $this->forHostName != $_SERVER['HTTP_HOST']) {
+            $hostName = false;
+        }
+        if (($this->type == $this->forUser or $this->forUser == "all") and $rootHost == true and $hostName = true):
             if ($this->debug == true)
                 echo $this->type . " - " . $route . "<br/>";
             if (!empty($funcs)) {
