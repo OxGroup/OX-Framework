@@ -170,7 +170,7 @@ class Route
         if ($this->forHostName != "all" and $this->forHostName != $_SERVER['HTTP_HOST']) {
             $hostName = false;
         }
-        if (($this->type == $this->forUser or $this->forUser == "all") and $rootHost == true and $hostName = true):
+        if (($this->type == $this->forUser or $this->forUser == "all") and $rootHost == true and $hostName == true):
             if ($this->debug == true)
                 echo $this->type . " - " . $route . "<br/>";
             if (!empty($funcs)) {
