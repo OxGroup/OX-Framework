@@ -12,7 +12,6 @@ namespace Ox;
 class Config
 {
 
-    public static $domain = "test.dev";
     public static $dbhost = "localhost";
     public static $dbname = "test";
     public static $dbuser = "root";
@@ -28,7 +27,6 @@ class Config
 
         if (file_exists(__DIR__ . "/../../../../test.conf.php")) {
             include_once(__DIR__ . "/../../../../test.conf.php");
-            self::$domain = \TestConfig::$domain;
             self::$dbhost = \TestConfig::$dbhost;
             self::$dbname = \TestConfig::$dbname;
             self::$dbuser = \TestConfig::$dbuser;
