@@ -38,7 +38,6 @@ class Route
      */
     public function __construct($debug = false)
     {
-        self::$request=$_REQUEST;
         $this->debug = $debug;
         $this->config = new Config();
         $this->auth = new $this->auth;
