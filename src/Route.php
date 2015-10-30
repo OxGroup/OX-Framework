@@ -30,7 +30,6 @@ class Route
     protected $route;
     protected $class;
     protected $config;
-    public static $request=array();
 
     /**
      * Route constructor.
@@ -162,7 +161,7 @@ class Route
                     echo "$routePreg==$GET<br/>";
                 if ((preg_match($routePreg, $GET) and $route != $GET) or $route == $GET) {
                     if(isset($setGet) and !empty($SetGet)){
-                        self::$request= $SetGet;
+                        App::$request = $SetGet;
                     }
 
                     self::$get = explode("/", $GET);
