@@ -11,7 +11,7 @@ namespace Ox;
 
 class Config
 {
-
+    public static $domain = "test.dev";
     public static $dbhost = "localhost";
     public static $dbname = "test";
     public static $dbuser = "root";
