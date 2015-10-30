@@ -160,8 +160,8 @@ class Route
                     echo "$routePreg==$GET<br/>";
                 if ((preg_match($routePreg, $GET) and $route != $GET) or $route == $GET) {
                     if(isset($setGet) and !empty($SetGet)){
-                    $_GET=$setGet;
-                    $_REQUEST=$setGet;
+                    $_GET= $SetGet;
+                    $_REQUEST= $SetGet;
                     }
 
                     self::$get = explode("/", $GET);
