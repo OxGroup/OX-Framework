@@ -159,7 +159,7 @@ class Route
                 if ($this->debug == true)
                     echo "$routePreg==$GET<br/>";
                 if ((preg_match($routePreg, $GET) and $route != $GET) or $route == $GET) {
-                    if(!empty($SetGet)){
+                    if(isset($setGet) and !empty($SetGet)){
                     $_GET=$setGet;
                     $_REQUEST=$setGet;
                     }
