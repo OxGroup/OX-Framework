@@ -23,7 +23,6 @@
     "classmap": [
       "src/"
     ]
-
   },
   "autoload": {
     "psr-1": {

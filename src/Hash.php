@@ -62,7 +62,7 @@ class Hash
         }
 
         if ($bytes === '' && @is_readable('/dev/urandom') &&
-            ($hRand = @fopen('/dev/urandom', 'rb')) !== FALSE
+            ($hRand = @fopen('/dev/urandom', 'rb')) !== false
         ) {
             $bytes = fread($hRand, $count);
             fclose($hRand);
