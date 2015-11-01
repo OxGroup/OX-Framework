@@ -29,9 +29,9 @@ abstract class AbstractModel
      */
     public static function getCache($data, $orderBy)
     {
-        $cache = self::$cache;
-        if (isset($cache[serialize($data)]) and !empty($cache[serialize($data)][serialize($orderBy)])) {
-            return $cache[serialize($data)][serialize($orderBy)];
+        $cache = static::$cache;
+        if (isset($cache[static::$table][serialize($data)]) and !empty($cache[static::$table][serialize($data)][serialize($orderBy)])) {
+            return $cache[static::$table][serialize($data)][serialize($orderBy)];
         } else {
             return false;
         }
@@ -44,14 +44,14 @@ abstract class AbstractModel
      */
     public static function addCache($data, $orderBy, $result)
     {
-        $cache = self::$cache;
-        $cache[serialize($data)][serialize($orderBy)] = $result;
-        self::$cache = $cache;
+        $cache = static::$cache;
+        $cache[static::$table][serialize($data)][serialize($orderBy)] = $result;
+        static::$cache = $cache;
     }
 
     public static function clearCache()
     {
-        self::$cache = array();
+        static::$cache = array();
     }
 
 
