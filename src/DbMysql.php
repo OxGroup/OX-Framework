@@ -71,7 +71,7 @@ class DbMysql
             $sth = $this->dbh->prepare($sqltxt);
             $sth->execute($this->whereParams + $this->dataParams);
             $this->clean();
-            return (object)array("cous" => $sth->rowCount(), "sqlquery" => $sqltxt, "errorInfo" => $sth->errorInfo());
+            return (object)array("count" => $sth->rowCount(), "sqlquery" => $sqltxt, "errorInfo" => $sth->errorInfo());
 
         }
     }
@@ -123,7 +123,7 @@ class DbMysql
     protected function buildParams($params = array(), $sub = "")
     {
         $doubleKeys = array();
-        $cous = 0;
+        $count = 0;
         $CharFix = new CharFix();
         foreach ($params as $key => $val) {
 
@@ -187,9 +187,9 @@ class DbMysql
 
 
             if (isset($doubleKeys[$sub . $key])) {
-                $doubleKeys[$sub . $key . $cous++] = 0;
-                $dataPocess[$sub . $key . $cous] = $val;
-                $tplKey = "{$sub}{$key}{$cous}";
+                $doubleKeys[$sub . $key . $count++] = 0;
+                $dataPocess[$sub . $key . $count] = $val;
+                $tplKey = "{$sub}{$key}{$count}";
             } else {
                 $dataPocess[$sub . $key] = $val;
                 $doubleKeys[$sub . $key] = 0;
@@ -244,7 +244,7 @@ class DbMysql
             $sth->execute($this->whereParams);
             $this->clean();
             $result="";
-            return (object)array("cous" => $sth->rowCount(), "rows" => $result, "sqlquery" => $sqltxt, "errorInfo" => $sth->errorInfo());
+            return (object)array("count" => $sth->rowCount(), "rows" => $result, "sqlquery" => $sqltxt, "errorInfo" => $sth->errorInfo());
 
         }
     }
@@ -270,7 +270,7 @@ class DbMysql
             $sth->execute($this->dataParams);
 
             $this->clean();
-            return (object)array("cous" => $sth->rowCount(), "id" => $this->dbh->lastInsertId(), "sqlquery" => $sqltxt, "errorInfo" => $sth->errorInfo());
+            return (object)array("count" => $sth->rowCount(), "id" => $this->dbh->lastInsertId(), "sqlquery" => $sqltxt, "errorInfo" => $sth->errorInfo());
 
 
         }
@@ -278,10 +278,10 @@ class DbMysql
 
     /**
      * @return object|string|array
-     * @cous
+     * @count
      * @rows
      *
-     * @return string cous
+     * @return string count
      * @return object rows
      */
     public function read()
@@ -309,7 +309,7 @@ class DbMysql
                 $sth->execute($this->whereParams);
                 $result = $sth->fetchAll(\PDO::FETCH_OBJ);
                 $this->clean();
-                return (object)array("cous" => $sth->rowCount(), "rows" => $result, "sqlquery" => $sqltxt, "errorInfo" => $sth->errorInfo());
+                return (object)array("count" => $sth->rowCount(), "rows" => $result, "sqlquery" => $sqltxt, "errorInfo" => $sth->errorInfo());
             } catch (\Exception $e) {
                 // catch( Exception $e ) will give no warning, but will not catch Exception
                 echo "ERROR: $e";
