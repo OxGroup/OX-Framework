@@ -20,7 +20,7 @@ namespace Ox;
 class Route
 {
     public static $get;
-    public $cous = 0;
+    public $count = 0;
     public $auth = "\Ox\Auth";
     public $setHost = "all";
     public $forUser = "all";
@@ -114,7 +114,7 @@ class Route
             if (!empty($funcs)) {
 
                 if ($route == $GET) {
-                    $this->cous++;
+                    $this->count++;
                     $func = explode(":", $funcs);
                     if (isset($func[1])) {
                         if (file_exists(__DIR__ . "/../../../../http/models" . $func[0] . ".php")) {
@@ -164,7 +164,7 @@ class Route
 
                     self::$get = explode("/", $GET);
 
-                    $this->cous++;
+                    $this->count++;
                     $resultRoute = explode("::", $class);
                     if (!empty($resultRoute[1])) {
                         return $this->FileController($route, $resultRoute[0], $resultRoute[1]);
@@ -177,7 +177,7 @@ class Route
                 }
             }
             if (!empty($location)) {
-                $this->cous++;
+                $this->count++;
                 header("Location: " . $location);
             }
 
@@ -198,7 +198,7 @@ class Route
         if (is_readable($file) == false) {
             die ($file . ' Controller Not Found');
         } else {
-            $this->cous++;
+            $this->count++;
             $class .= "Controller";
             try {
                 $class = "\\OxApp\\controllers\\" . $class;
