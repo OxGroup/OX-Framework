@@ -5,9 +5,7 @@
  * Date: 31.05.2015
  * Time: 20:44
  */
-
 //Activ method :)
-
 /**
  * Class AbstractModel
  */
@@ -16,10 +14,14 @@ namespace Ox;
 use \Ox\DbMysql;
 
 abstract class AbstractModel
-
 {
     protected static $table;
     protected static $cache;
+
+    public static function clearCache()
+    {
+        static::$cache = array();
+    }
 
     /**
      * @param $data
@@ -49,12 +51,6 @@ abstract class AbstractModel
         static::$cache = $cache;
     }
 
-    public static function clearCache()
-    {
-        static::$cache = array();
-    }
-
-
     /**
      * @param array $orderBy
      *
@@ -71,10 +67,20 @@ abstract class AbstractModel
             $mysql->cfg = array("table" => static::$table) + $orderBy;
             $result = $mysql->read();
             self::addCache("allData", $orderBy, $result);
-            return $result;
         } else {
-            return $cache;
+            $result = $cache;
         }
+        if (!empty($result) && $result->errorInfo[0] == 00000) {
+            $success = true;
+            $error = null;
+        } else {
+            $success = false;
+            $error = $result->errorInfo[0];
+        }
+        $result->result = (object)array("success" => $success,
+            "error" => $error,
+            "method" => "read");
+        return $result;
     }
 
     /**
@@ -93,10 +99,20 @@ abstract class AbstractModel
             $mysql->cfg = array("table" => static::$table, "where" => $data) + $orderBy;
             $result = $mysql->read();
             self::addCache($data, $orderBy, $result);
-            return $result;
         } else {
-            return $cache;
+            $result = $cache;
         }
+        if (!empty($result) && $result->errorInfo[0] == 00000) {
+            $success = true;
+            $error = null;
+        } else {
+            $success = false;
+            $error = $result->errorInfo[0];
+        }
+        $result->result = (object)array("success" => $success,
+            "error" => $error,
+            "method" => "read");
+        return $result;
     }
 
     /**
@@ -113,10 +129,20 @@ abstract class AbstractModel
             $mysql->freeWhere = $data;
             $result = $mysql->read();
             self::addCache("freeData", $data, $result);
-            return $result;
         } else {
-            return $cache;
+            $result = $cache;
         }
+        if (!empty($result) && $result->errorInfo[0] == 00000) {
+            $success = true;
+            $error = null;
+        } else {
+            $success = false;
+            $error = $result->errorInfo[0];
+        }
+        $result->result = (object)array("success" => $success,
+            "error" => $error,
+            "method" => "read");
+        return $result;
     }
 
     /**
@@ -129,7 +155,18 @@ abstract class AbstractModel
         $mysql = new DbMysql();
         $mysql->cfg = array("table" => static::$table, "data" => $data);
         self::clearCache();
-        return $mysql->create();
+        $result = $mysql->create();
+        if (!empty($result) && $result->errorInfo[0] == 00000) {
+            $success = true;
+            $error = null;
+        } else {
+            $success = false;
+            $error = $result->errorInfo[0];
+        }
+        $result->result = (object)array("success" => $success,
+            "error" => $error,
+            "method" => "add");
+        return $result;
     }
 
     /**
@@ -143,7 +180,18 @@ abstract class AbstractModel
         $mysql = new DbMysql();
         $mysql->cfg = array("table" => static::$table, "data" => $data, "where" => $where);
         self::clearCache();
-        return $mysql->update();
+        $result = $mysql->update();
+        if (!empty($result) && $result->errorInfo[0] == 00000) {
+            $success = true;
+            $error = null;
+        } else {
+            $success = false;
+            $error = $result->errorInfo[0];
+        }
+        $result->result = (object)array("success" => $success,
+            "error" => $error,
+            "method" => "update");
+        return $result;
     }
 
     /**
@@ -156,6 +204,96 @@ abstract class AbstractModel
         $mysql = new DbMysql();
         $mysql->cfg = array("table" => static::$table, "where" => $where);
         self::clearCache();
-        return $mysql->delete();
+        $result = $mysql->delete();
+        if (!empty($result) && $result->errorInfo[0] == 00000) {
+            $success = true;
+            $error = null;
+        } else {
+            $success = false;
+            $error = $result->errorInfo[0];
+        }
+        $result->result = (object)array("success" => $success,
+            "error" => $error,
+            "method" => "delete");
+        return $result;
+    }
+
+    /**
+     * @param           $data
+     * @param           $where
+     * @param array     $checkArray
+     * @param bool|true $update
+     * @param string    $customText
+     *
+     * @return array|bool|object|string
+     */
+    public static function updateCheckDouble($data, $where, $checkArray = array(), $update = true, $customText = "")
+    {
+        $doubleFind = self::findByColumn($checkArray);
+        if ($doubleFind->count > 0) {
+            $double = true;
+        } else {
+            $double = false;
+        }
+        if ($update == true or $double == false) {
+            $update = self::Update($data, $where);
+            if (!empty($update) && $update->errorInfo[0] == 00000) {
+                $success = true;
+                $error = null;
+            } else {
+                $success = false;
+                $error = $update->errorInfo[0];
+            }
+            $update->result = (object)array("success" => $success,
+                "error" => $error,
+                "text" => $customText,
+                "method" => "update",
+                "double" => $double);
+            return $update;
+        } else {
+            return (object)array("result" => array("success" => false,
+                "text" => $customText,
+                "method" => "update",
+                "double" => $double));
+        }
+    }
+
+    /**
+     * @param           $data
+     * @param array     $checkArray
+     * @param bool|true $add
+     * @param string    $customText
+     *
+     * @return array|bool|object|string
+     */
+    public static function addCheckDouble($data, $checkArray = array(), $add = true, $customText = "")
+    {
+        $doubleFind = self::findByColumn($checkArray);
+        if ($doubleFind->count > 0) {
+            $double = true;
+        } else {
+            $double = false;
+        }
+        if ($add == true or $double == false) {
+            $add = self::Add($data);
+            if (!empty($add) && $add->errorInfo[0] == 00000) {
+                $success = true;
+                $error = null;
+            } else {
+                $success = false;
+                $error = $add->errorInfo[0];
+            }
+            $add->result = (object)array("success" => $success,
+                "error" => $error,
+                "text" => $customText,
+                "method" => "add",
+                "double" => $double);
+            return $add;
+        } else {
+            return (object)array("result" => array("success" => false,
+                "text" => $customText,
+                "method" => "add",
+                "double" => $double));
+        }
     }
 }
