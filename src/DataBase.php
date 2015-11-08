@@ -226,7 +226,9 @@ class DataBase
             try {
                 $sqltxt = "SELECT * FROM `" . self::$table . "` {$where} " . self::$orderBy . " " . self::$limit;
                 $sth = $this->dbh->prepare($sqltxt);
-                $sth->execute(self::$whereParams);
+                if(!empty(self::$whereParams)) {
+                    $sth->execute(self::$whereParams);
+                }
                 $result = $sth->fetchAll(\PDO::FETCH_OBJ);
                 return (object)array("count" => $sth->rowCount(), "rows" => $result, "sqlquery" => $sqltxt, "errorInfo" => $sth->errorInfo());
             } catch (\PDOException $e) {
