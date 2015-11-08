@@ -1,19 +1,13 @@
 <?php
 /**
- * Created by OxProfitGroup.
- * User: Александр
- * Date: 31.05.2015
- * Time: 20:44
- */
-//Activ method :)
-/**
- * Class AbstractModel
+ * Created by PhpStorm.
+ * User: aliaxander
+ * Date: 08.11.15
+ * Time: 16:52
  */
 namespace Ox;
 
-use \Ox\DbMysql;
-
-abstract class AbstractModel
+abstract class NewAbstractModel
 {
     protected static $table;
     protected static $cache;
@@ -60,12 +54,8 @@ abstract class AbstractModel
     {
         $cache = self::getCache("allData", $orderBy);
         if ($cache == false) {
-            if (!empty($orderBy)) {
-                $orderBy = array("order" => $orderBy);
-            }
-            $mysql = new DbMysql();
-            $mysql->cfg = array("table" => static::$table) + $orderBy;
-            $result = $mysql->read();
+            $mysql = new DataBase();
+            $result = $mysql->table(static::$table)->orderBy($orderBy)->read();
             self::addCache("allData", $orderBy, $result);
         } else {
             $result = $cache;
@@ -93,11 +83,8 @@ abstract class AbstractModel
     {
         $cache = self::getCache($data, $orderBy);
         if ($cache == false) {
-            if (!empty($orderBy))
-                $orderBy = array("order" => $orderBy);
-            $mysql = new DbMysql();
-            $mysql->cfg = array("table" => static::$table, "where" => $data) + $orderBy;
-            $result = $mysql->read();
+            $mysql = new DataBase();
+            $result = $mysql->table(static::$table)->where($data)->read();
             self::addCache($data, $orderBy, $result);
         } else {
             $result = $cache;
@@ -124,10 +111,8 @@ abstract class AbstractModel
     {
         $cache = self::getCache("freeData", $data);
         if ($cache == false) {
-            $mysql = new DbMysql();
-            $mysql->cfg = array("table" => static::$table);
-            $mysql->freeWhere = $data;
-            $result = $mysql->read();
+            $mysql = new DataBase();
+            $result = $mysql->table(static::$table)->setFreeWhere($data)->read();
             self::addCache("freeData", $data, $result);
         } else {
             $result = $cache;
@@ -152,10 +137,9 @@ abstract class AbstractModel
      */
     public static function Add($data)
     {
-        $mysql = new DbMysql();
-        $mysql->cfg = array("table" => static::$table, "data" => $data);
+        $mysql = new DataBase();
+        $result = $mysql->table(static::$table)->data($data)->create();
         self::clearCache();
-        $result = $mysql->create();
         if (!empty($result) && $result->errorInfo[0] == 00000) {
             $success = true;
             $error = null;
@@ -177,10 +161,9 @@ abstract class AbstractModel
      */
     public static function Update($data, $where)
     {
-        $mysql = new DbMysql();
-        $mysql->cfg = array("table" => static::$table, "data" => $data, "where" => $where);
+        $mysql = new DataBase();
+        $result = $mysql->table(static::$table)->data($data)->where($where)->update();
         self::clearCache();
-        $result = $mysql->update();
         if (!empty($result) && $result->errorInfo[0] == 00000) {
             $success = true;
             $error = null;
@@ -201,10 +184,9 @@ abstract class AbstractModel
      */
     public static function Delete($where)
     {
-        $mysql = new DbMysql();
-        $mysql->cfg = array("table" => static::$table, "where" => $where);
+        $mysql = new DataBase();
+        $result = $mysql->table(static::$table)->where($where)->delete();
         self::clearCache();
-        $result = $mysql->delete();
         if (!empty($result) && $result->errorInfo[0] == 00000) {
             $success = true;
             $error = null;
@@ -230,7 +212,7 @@ abstract class AbstractModel
     public static function updateCheckDouble($data, $where, $checkArray = array(), $update = true, $customText = "")
     {
         $doubleFind = self::findByColumn($checkArray);
-        if ($doubleFind->count > 0) {
+        if ($doubleFind->count > 1) {
             $double = true;
         } else {
             $double = false;
