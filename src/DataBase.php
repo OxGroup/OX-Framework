@@ -168,7 +168,8 @@ class DataBase
     public function orderBy($array = array())
     {
         $orderBy = "";
-        if (!empty($array)) {
+
+        if (!empty($array) and gettype($array) != "string") {
             foreach ($array as $key => $val) {
                 if (!empty($orderBy)) {
                     $orderBy .= ", ";
@@ -176,6 +177,8 @@ class DataBase
                 $orderBy .= "`$key` $val";
             }
             static::$orderBy = " ORDER BY {$orderBy}";
+        } elseif (!empty($array)) {
+            static::$orderBy = " ORDER BY {$array}";
         }
         return $this;
     }
@@ -237,11 +240,9 @@ class DataBase
                 $where = "WHERE " . self::$whereTpl;
             }
             try {
-                $sqltxt = "SELECT * FROM `" . self::$table . "` {$where} " . self::$orderBy . " " . self::$limit;
+                $sqltxt = "SELECT * FROM `" . self::$table . "` {$where} " . self::$orderBy . " " . self::$limit . ";";
                 $sth = $this->dbh->prepare($sqltxt);
-                if (!empty(self::$whereParams)) {
-                    $sth->execute(self::$whereParams);
-                }
+                $sth->execute(self::$whereParams);
                 $result = $sth->fetchAll(\PDO::FETCH_OBJ);
                 $this->clearParam();
                 return (object)array("count" => $sth->rowCount(), "rows" => $result, "sqlquery" => $sqltxt, "errorInfo" => $sth->errorInfo());
