@@ -12,7 +12,7 @@ use Doctrine\DBAL\DriverManager;
 class DataBase
 {
     public static $where, $orderBy, $table;
-    protected static $whereTpl, $whereParams, $limit, $dataTpl, $dataParams, $forIn;
+    protected static $whereTpl, $whereParams=array(), $limit, $dataTpl, $dataParams = array(), $forIn;
     public $dbh;
 
     public function __construct()
