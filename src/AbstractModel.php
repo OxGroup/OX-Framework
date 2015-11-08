@@ -12,6 +12,7 @@
 namespace Ox;
 
 use \Ox\DbMysql;
+use OxApp\models\DataBase;
 
 abstract class AbstractModel
 {
@@ -117,10 +118,8 @@ abstract class AbstractModel
     {
         $cache = self::getCache("freeData", $data);
         if ($cache == false) {
-            $mysql = new DbMysql();
-            $mysql->cfg = array("table" => static::$table);
-            $mysql->freeWhere = $data;
-            $result = $mysql->read();
+            $mysql = new DataBase();
+            $result = $mysql->table(static::$table)->setFreeWhere($data)->read();
             self::addCache("freeData", $data, $result);
         } else {
             $result = $cache;
@@ -145,10 +144,9 @@ abstract class AbstractModel
      */
     public static function Add($data)
     {
-        $mysql = new DbMysql();
-        $mysql->cfg = array("table" => static::$table, "data" => $data);
+        $mysql = new DataBase();
+        $result = $mysql->table(static::$table)->data($data)->create();
         self::clearCache();
-        $result = $mysql->create();
         if (!empty($result) && $result->errorInfo[0] == 00000) {
             $success = true;
             $error = null;
@@ -170,10 +168,9 @@ abstract class AbstractModel
      */
     public static function Update($data, $where)
     {
-        $mysql = new DbMysql();
-        $mysql->cfg = array("table" => static::$table, "data" => $data, "where" => $where);
+        $mysql = new DataBase();
+        $result = $mysql->table(static::$table)->data($data)->where($where)->update();
         self::clearCache();
-        $result = $mysql->update();
         if (!empty($result) && $result->errorInfo[0] == 00000) {
             $success = true;
             $error = null;
@@ -194,10 +191,9 @@ abstract class AbstractModel
      */
     public static function Delete($where)
     {
-        $mysql = new DbMysql();
-        $mysql->cfg = array("table" => static::$table, "where" => $where);
+        $mysql = new DataBase();
+        $result = $mysql->table(static::$table)->where($where)->delete();
         self::clearCache();
-        $result = $mysql->delete();
         if (!empty($result) && $result->errorInfo[0] == 00000) {
             $success = true;
             $error = null;
