@@ -138,7 +138,7 @@ class DataBase
      *
      * @return $this
      */
-    public function data($array)
+    public function data($array = array())
     {
         if (!empty($array)) {
             $where = $this->buildParams($array, "d_");
@@ -153,7 +153,7 @@ class DataBase
      *
      * @return $this
      */
-    public function orderBy($array)
+    public function orderBy($array = array())
     {
         $orderBy = "";
         foreach ($array as $key => $val) {
@@ -171,7 +171,7 @@ class DataBase
      *
      * @return $this
      */
-    public function limit($array)
+    public function limit($array = array())
     {
         $limit = "";
         foreach ($array as $key => $val) {
@@ -204,7 +204,7 @@ class DataBase
      *
      * @return $this
      */
-    public function setFreeWhere($where)
+    public function setFreeWhere($where = array())
     {
         self::$whereTpl = $where;
         return $this;
