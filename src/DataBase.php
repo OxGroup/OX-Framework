@@ -12,7 +12,7 @@ use Doctrine\DBAL\DriverManager;
 class DataBase
 {
     public static $where, $orderBy, $table;
-    protected static $whereTpl, $whereParams=array(), $limit, $dataTpl, $dataParams = array(), $forIn;
+    protected static $whereTpl, $whereParams = array(), $limit, $dataTpl, $dataParams = array(), $forIn;
     public $dbh;
 
     public function __construct()
@@ -47,7 +47,7 @@ class DataBase
      *
      * @return $this
      */
-    public function where($array)
+    public function where($array = array())
     {
         if (!empty($array)) {
             $where = $this->buildParams($array, "w_");
@@ -55,6 +55,18 @@ class DataBase
             static::$whereParams = $where['data'];
         }
         return $this;
+    }
+
+    protected function clearParam()
+    {
+        self::$where = "";
+        self::$orderBy = "";
+        self::$table = "";
+        self::$whereTpl = "";
+        self::$whereParams = array();
+        self::$limit = "";
+        self::$dataTpl = "";
+        self::$dataParams = array();
     }
 
     protected function buildParams($params = array(), $sub = "")
@@ -156,13 +168,15 @@ class DataBase
     public function orderBy($array = array())
     {
         $orderBy = "";
-        foreach ($array as $key => $val) {
-            if (!empty($orderBy)) {
-                $orderBy .= ", ";
+        if (!empty($array)) {
+            foreach ($array as $key => $val) {
+                if (!empty($orderBy)) {
+                    $orderBy .= ", ";
+                }
+                $orderBy .= "`$key` $val";
             }
-            $orderBy .= "`$key` $val";
+            static::$orderBy = " ORDER BY {$orderBy}";
         }
-        static::$orderBy = " ORDER BY {$orderBy}";
         return $this;
     }
 
@@ -193,8 +207,7 @@ class DataBase
             "table" => self::$table,
             "where" => self::$whereTpl,
             "data" => self::$whereParams,
-            "orderby" => self::$orderBy,
-            "forIn" => self::$forIn
+            "orderby" => self::$orderBy
         );
         return $array;
     }
@@ -226,12 +239,14 @@ class DataBase
             try {
                 $sqltxt = "SELECT * FROM `" . self::$table . "` {$where} " . self::$orderBy . " " . self::$limit;
                 $sth = $this->dbh->prepare($sqltxt);
-                if(!empty(self::$whereParams)) {
+                if (!empty(self::$whereParams)) {
                     $sth->execute(self::$whereParams);
                 }
                 $result = $sth->fetchAll(\PDO::FETCH_OBJ);
+                $this->clearParam();
                 return (object)array("count" => $sth->rowCount(), "rows" => $result, "sqlquery" => $sqltxt, "errorInfo" => $sth->errorInfo());
             } catch (\PDOException $e) {
+                $this->clearParam();
                 return "ERROR: $e";
             }
 
@@ -258,8 +273,10 @@ class DataBase
                 $sqltxt = "UPDATE `" . self::$table . "` SET " . self::$dataTpl . " {$where} " . self::$orderBy . " " . self::$limit;
                 $sth = $this->dbh->prepare($sqltxt);
                 $sth->execute(self::$dataParams + self::$whereParams);
+                $this->clearParam();
                 return (object)array("count" => $sth->rowCount(), "sqlquery" => $sqltxt, "errorInfo" => $sth->errorInfo());
             } catch (\PDOException $e) {
+                $this->clearParam();
                 return "ERROR: $e";
             }
         }
@@ -283,8 +300,10 @@ class DataBase
                 $sth = $this->dbh->prepare($sqltxt);
                 $sth->execute(self::$whereParams);
                 $result = "";
+                $this->clearParam();
                 return (object)array("count" => $sth->rowCount(), "rows" => $result, "sqlquery" => $sqltxt, "errorInfo" => $sth->errorInfo());
             } catch (\PDOException $e) {
+                $this->clearParam();
                 return "ERROR: $e";
             }
         }
@@ -305,8 +324,10 @@ class DataBase
                 $sqltxt = "INSERT INTO `" . self::$table . "` SET " . self::$dataTpl;
                 $sth = $this->dbh->prepare($sqltxt);
                 $sth->execute(self::$dataParams);
+                $this->clearParam();
                 return (object)array("count" => $sth->rowCount(), "id" => $this->dbh->lastInsertId(), "sqlquery" => $sqltxt, "errorInfo" => $sth->errorInfo());
             } catch (\PDOException $e) {
+                $this->clearParam();
                 return "ERROR: $e";
             }
         }
@@ -319,6 +340,7 @@ class DataBase
      */
     public function transaction($array)
     {
+        $this->clearParam();
         try {
             // do stuff
             $this->dbh->beginTransaction(); // start inner transaction, nesting level 2

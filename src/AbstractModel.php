@@ -60,9 +60,6 @@ abstract class AbstractModel
     {
         $cache = self::getCache("allData", $orderBy);
         if ($cache == false) {
-            if (!empty($orderBy)) {
-                $orderBy = array("order" => $orderBy);
-            }
             $mysql = new DataBase();
             $result = $mysql->table(static::$table)->orderBy($orderBy)->read();
             self::addCache("allData", $orderBy, $result);
