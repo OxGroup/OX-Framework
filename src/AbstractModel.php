@@ -63,9 +63,8 @@ abstract class AbstractModel
             if (!empty($orderBy)) {
                 $orderBy = array("order" => $orderBy);
             }
-            $mysql = new DbMysql();
-            $mysql->cfg = array("table" => static::$table) + $orderBy;
-            $result = $mysql->read();
+            $mysql = new DataBase();
+            $result = $mysql->table(static::$table)->orderBy($orderBy)->read();
             self::addCache("allData", $orderBy, $result);
         } else {
             $result = $cache;
@@ -95,9 +94,8 @@ abstract class AbstractModel
         if ($cache == false) {
             if (!empty($orderBy))
                 $orderBy = array("order" => $orderBy);
-            $mysql = new DbMysql();
-            $mysql->cfg = array("table" => static::$table, "where" => $data) + $orderBy;
-            $result = $mysql->read();
+            $mysql = new DataBase();
+            $result = $mysql->table(static::$table)->orderBy($orderBy)->where($data)->read();
             self::addCache($data, $orderBy, $result);
         } else {
             $result = $cache;
