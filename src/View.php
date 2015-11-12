@@ -47,6 +47,7 @@ class View
         self::$twig->addExtension(new \Twig_Extension_Debug());
         self::$twig->addExtension(new \Twig_Extension_Escaper());
         self::$twig->addExtension(new \Twig_Extension_Optimizer());
+        self::$twig->addExtension(new \Twig_Extension_StringLoader());
         echo self::$twig->render($tpl . '.tpl.php', self::$data);
     }
 }
