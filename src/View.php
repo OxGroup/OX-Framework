@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Created by OxProfitGroup.
  * User: Александр
@@ -7,6 +6,7 @@
  * Time: 21:15
  */
 namespace Ox;
+
 class View
 {
     public static $settings = array();
@@ -42,10 +42,11 @@ class View
                 self::$data[$key] = $val;
             }
         }
-
         $loader = new \Twig_Loader_Filesystem(__DIR__ . '/../../../../views');
         self::$twig = new \Twig_Environment($loader, self::$settings);
-
+        self::$twig->addExtension(new \Twig_Extension_Debug());
+        self::$twig->addExtension(new \Twig_Extension_Escaper());
+        self::$twig->addExtension(new \Twig_Extension_Optimizer());
         echo self::$twig->render($tpl . '.tpl.php', self::$data);
     }
 }
