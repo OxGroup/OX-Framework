@@ -15,7 +15,11 @@
     "twig/twig": "1.*",
     "symfony/http-foundation": "2.*",
     "nette/mail": "2.*",
-    "aptoma/twig-markdown": "2.*"
+    "aptoma/twig-markdown": "2.*",
+    "symfony/filesystem": "2.7.*",
+    "symfony/finder": "2.7.*",
+    "mtdowling/cron-expression": "@dev",
+    "twig/tracelytics": "@dev"
   },
   "autoload-dev": {
     "psr-1": {
