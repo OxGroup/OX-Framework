@@ -13,6 +13,8 @@
     "filp/whoops": "1.*",
     "doctrine/dbal": "2.*",
     "twig/twig": "1.*",
+    "michelf/php-markdown": "1.5.*",
+    "league/commonmark": "0.9.*",
     "symfony/http-foundation": "2.*",
     "nette/mail": "2.*",
     "aptoma/twig-markdown": "2.*",
