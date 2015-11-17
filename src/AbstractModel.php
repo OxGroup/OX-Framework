@@ -218,7 +218,7 @@ abstract class AbstractModel
     public static function updateCheckDouble($data, $where, $checkArray = array(), $update = true, $customText = "")
     {
         $doubleFind = self::findByColumn($checkArray);
-        if ($doubleFind->count > 0) {
+        if ($doubleFind->count > 1) {
             $double = true;
         } else {
             $double = false;
