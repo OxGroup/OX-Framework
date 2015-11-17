@@ -14,7 +14,8 @@
     "doctrine/dbal": "2.*",
     "twig/twig": "1.*",
     "symfony/http-foundation": "2.*",
-    "nette/mail": "2.*"
+    "nette/mail": "2.*",
+    "aptoma/twig-markdown": "2.*"
   },
   "autoload-dev": {
     "psr-1": {
