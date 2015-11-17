@@ -7,6 +7,9 @@
  */
 namespace Ox;
 
+use Aptoma\Twig\Extension\MarkdownEngine\MichelfMarkdownEngine;
+use Aptoma\Twig\Extension\MarkdownExtension;
+
 class View
 {
     public static $settings = array();
@@ -48,6 +51,8 @@ class View
         self::$twig->addExtension(new \Twig_Extension_Escaper());
         self::$twig->addExtension(new \Twig_Extension_Optimizer());
         self::$twig->addExtension(new \Twig_Extension_StringLoader());
+        $engine = new MichelfMarkdownEngine();
+        self::$twig->addExtension(new MarkdownExtension($engine));
         echo self::$twig->render($tpl . '.tpl.php', self::$data);
     }
 }
