@@ -20,7 +20,6 @@
     "aptoma/twig-markdown": "2.*",
     "symfony/filesystem": "2.7.*",
     "symfony/finder": "2.7.*",
-    "mtdowling/cron-expression": "@dev",
     "twig/tracelytics": "@dev"
   },
   "autoload-dev": {
