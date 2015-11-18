@@ -95,6 +95,10 @@ class DataBase
                         break;
                 }
             }
+
+            if($val=="now()"){
+                $val= date('Y-m-d H:i:s');
+            }
             $spec = "=";
             $specStart = "";
             $specStop = "";
