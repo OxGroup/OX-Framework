@@ -130,7 +130,7 @@ class DataBase
                         break;
                 }
             }
-            echo $key . "\n";
+           // echo $key . "\n";
             $key = $CharFix->charNumber($key);
             if (isset($doubleKeys[$sub . $key])) {
                 $doubleKeys[$sub . $key . $count++] = 0;
