@@ -111,7 +111,7 @@ abstract class AbstractModel
     /**
      * @param $data
      *
-     * @return object|string
+     * @return object|string|array
      */
     public static function findByColumnFree($data)
     {
@@ -139,7 +139,7 @@ abstract class AbstractModel
     /**
      * @param $data
      *
-     * @return array|string
+     * @return object|array|string
      */
     public static function Add($data)
     {
@@ -163,7 +163,7 @@ abstract class AbstractModel
      * @param $data
      * @param $where
      *
-     * @return array|string
+     * @return object|array|string
      */
     public static function Update($data, $where)
     {
@@ -186,7 +186,7 @@ abstract class AbstractModel
     /**
      * @param $where
      *
-     * @return array|string
+     * @return object|array|string
      */
     public static function Delete($where)
     {
