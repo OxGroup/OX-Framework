@@ -18,7 +18,7 @@ abstract class AbstractModel
     protected static $table;
     protected static $cache;
 
-    public static function clearCache()
+    protected static function clearCache()
     {
         static::$cache = array();
     }
@@ -29,7 +29,7 @@ abstract class AbstractModel
      *
      * @return bool
      */
-    public static function getCache($data, $orderBy)
+    protected static function getCache($data, $orderBy)
     {
         $cache = static::$cache;
         if (isset($cache[static::$table][serialize($data)]) and !empty($cache[static::$table][serialize($data)][serialize($orderBy)])) {
@@ -44,7 +44,7 @@ abstract class AbstractModel
      * @param $orderBy
      * @param $result
      */
-    public static function addCache($data, $orderBy, $result)
+    protected static function addCache($data, $orderBy, $result)
     {
         $cache = static::$cache;
         $cache[static::$table][serialize($data)][serialize($orderBy)] = $result;
@@ -56,12 +56,12 @@ abstract class AbstractModel
      *
      * @return object|string|array
      */
-    public static function findAll($orderBy = array())
+    public static function findAll($orderBy = array(), $limit = array())
     {
         $cache = self::getCache("allData", $orderBy);
         if ($cache == false) {
             $mysql = new DataBase();
-            $result = $mysql->table(static::$table)->orderBy($orderBy)->read();
+            $result = $mysql->table(static::$table)->orderBy($orderBy)->limit($limit)->read();
             self::addCache("allData", $orderBy, $result);
         } else {
             $result = $cache;
@@ -85,12 +85,12 @@ abstract class AbstractModel
      *
      * @return object|string|array
      */
-    public static function findByColumn($data, $orderBy = array())
+    public static function findByColumn($data, $orderBy = array(), $limit = array())
     {
         $cache = self::getCache($data, $orderBy);
         if ($cache == false) {
             $mysql = new DataBase();
-            $result = $mysql->table(static::$table)->where($data)->orderBy($orderBy)->read();
+            $result = $mysql->table(static::$table)->where($data)->orderBy($orderBy)->limit($limit)->read();
             self::addCache($data, $orderBy, $result);
         } else {
             $result = $cache;
@@ -141,7 +141,7 @@ abstract class AbstractModel
      *
      * @return object|array|string
      */
-    public static function Add($data)
+    public static function Add($data = array())
     {
         $mysql = new DataBase();
         $result = $mysql->table(static::$table)->data($data)->create();
@@ -165,7 +165,7 @@ abstract class AbstractModel
      *
      * @return object|array|string
      */
-    public static function Update($data, $where)
+    public static function Update($data = array(), $where = array())
     {
         $mysql = new DataBase();
         $result = $mysql->table(static::$table)->data($data)->where($where)->update();
@@ -188,7 +188,7 @@ abstract class AbstractModel
      *
      * @return object|array|string
      */
-    public static function Delete($where)
+    public static function Delete($where = array())
     {
         $mysql = new DataBase();
         $result = $mysql->table(static::$table)->where($where)->delete();
@@ -215,7 +215,7 @@ abstract class AbstractModel
      *
      * @return array|bool|object|string
      */
-    public static function updateCheckDouble($data, $where, $checkArray = array(), $update = true, $customText = "")
+    public static function updateCheckDouble($data = array(), $where = array(), $checkArray = array(), $update = true, $customText = "")
     {
         $doubleFind = self::findByColumn($checkArray);
         if ($doubleFind->count > 1) {
@@ -254,7 +254,7 @@ abstract class AbstractModel
      *
      * @return array|bool|object|string
      */
-    public static function addCheckDouble($data, $checkArray = array(), $add = true, $customText = "")
+    public static function addCheckDouble($data = array(), $checkArray = array(), $add = true, $customText = "")
     {
         $doubleFind = self::findByColumn($checkArray);
         if ($doubleFind->count > 0) {

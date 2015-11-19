@@ -100,11 +100,37 @@ class DataBase
             $specStart = "";
             $specStop = "";
             $key = $keyChar['0'];
-            if (isset($keyChar['2'])) {
+            if (!empty($keyChar['2'])) {
                 $and = $keyChar['2'];
             } else {
                 $and = "and";
             }
+            $keyCheck = explode("/", $key);
+            $in = false;
+            if (!empty($keyCheck[1])) {
+                $key = $keyChar['0'] = $keyCheck['0'];
+                switch ($keyCheck[1]) {
+                    case ("="):
+                        $spec = "=";
+                        break;
+                    case ("!="):
+                        $spec = "<>";
+                        break;
+                    case (">"):
+                        $spec = ">";
+                        break;
+                    case ("<"):
+                        $spec = "<";
+                        break;
+                    case ("in"):
+                        $in = $keyCheck[1];
+                        break;
+                    case ("not in"):
+                        $in = $keyCheck[1];
+                        break;
+                }
+            }
+            echo $key . "\n";
             $key = $CharFix->charNumber($key);
             if (isset($doubleKeys[$sub . $key])) {
                 $doubleKeys[$sub . $key . $count++] = 0;
@@ -116,7 +142,7 @@ class DataBase
                 $tplKeyCh = "{$sub}{$key}";
             }
             $tplKey = ":" . $tplKeyCh;
-            if (isset($keyChar['3']) and ($keyChar['3'] == "in" or $keyChar['3'] == "not in")) {
+            if ($in !== false) {
                 $tplKey = "";
                 foreach ($val as $keyV => $valV) {
                     $dataPocess[$tplKeyCh . "" . $keyV] = $valV;
@@ -125,7 +151,7 @@ class DataBase
                     }
                     $tplKey .= ":{$tplKeyCh}{$keyV}";
                 }
-                $spec = " IN ";
+                $spec = " {$in} ";
                 $specStart = "(";
                 $specStop = ")";
                 unset($dataPocess[$tplKeyCh]);
@@ -198,7 +224,9 @@ class DataBase
             }
             $limit .= "$key, $val";
         }
-        static::$limit = " LIMIT {$limit}";
+        if (!empty($limit)) {
+            static::$limit = " LIMIT {$limit}";
+        }
         return $this;
     }
 
