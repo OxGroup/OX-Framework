@@ -41,7 +41,6 @@ class View
 
     public static function build($tpl, $keys = array())
     {
-
         //set Settings:
         if (static::$cache == true) {
             self::$settings += array('cache' => __DIR__ . '/../../../../views/cache');
