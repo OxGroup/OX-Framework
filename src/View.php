@@ -15,6 +15,7 @@ class View
     public static $settings = array();
     public static $twig;
     protected static $data = array();
+    public static $cache=false;
 
     public function __construct($cache = false)
     {
@@ -30,6 +31,14 @@ class View
 
     public static function setSettings($array = array())
     {
+        if (static::$cache == true) {
+            self::$settings = array('cache' => __DIR__ . '/../../../../views/cache');
+        } elseif (static::$cache == false) {
+            self::$settings = array('cache' => false);
+        } else {
+            self::$settings = array('cache' => __DIR__ . '/../../../../' . static::$cache);
+        }
+
         self::$settings += $array;
     }
 
