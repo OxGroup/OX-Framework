@@ -170,7 +170,7 @@ abstract class AbstractModel
         $mysql = new DataBase();
         $result = $mysql->table(static::$table)->data($data)->where($where)->update();
         self::clearCache();
-        if (!empty($result) && $result->errorInfo[0] == 00000) {
+        if (isset($result->errorInfo) and isset($result->errorInfo[0]) and $result->errorInfo[0] == 00000) {
             $success = true;
             $error = null;
         } else {
