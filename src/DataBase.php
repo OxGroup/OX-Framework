@@ -122,6 +122,12 @@ class DataBase
                     case ("<"):
                         $spec = "<";
                         break;
+                    case ("<="):
+                        $spec = "<=";
+                        break;
+                    case (">="):
+                        $spec = ">=";
+                        break;
                     case ("in"):
                         $in = $keyCheck[1];
                         break;
