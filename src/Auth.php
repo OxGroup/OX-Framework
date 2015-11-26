@@ -41,7 +41,7 @@ class Auth extends AbstractModel
         } else {
 
             $hash = new \Ox\Hash;
-            $newremember_token = $hash->make($data->rows['0']->remember_token . date("H:m:d:Y:s"));
+            $newremember_token = $hash->make($data->rows['0']->password . date("H:m:d:Y:s"));
             self::Update(array("remember_token" => $newremember_token), array("id" => $user));
 
         }
