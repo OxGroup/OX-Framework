@@ -23,7 +23,7 @@
     "twig/tracelytics": "@dev"
   },
   "autoload-dev": {
-    "psr-1": {
+    "psr-0": {
       "Ox": "src/",
       "Ox\\": "src/"
     },
@@ -32,7 +32,7 @@
     ]
   },
   "autoload": {
-    "psr-1": {
+    "psr-0": {
       "Ox": "src/",
       "Ox\\": "src/"
     },
