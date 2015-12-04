@@ -10,16 +10,11 @@
   "require": {
     "php": ">=5.5.0",
     "ext-pdo": "*",
-    "filp/whoops": "1.*",
-    "doctrine/dbal": "2.*",
-    "twig/twig": "1.*",
-    "michelf/php-markdown": "1.5.*",
-    "league/commonmark": "*",
+    "filp/whoops": "dev-php7",
+    "twig/twig": "1.23.*",
     "symfony/http-foundation": "2.*",
     "nette/mail": "2.*",
     "aptoma/twig-markdown": "2.*",
-    "symfony/filesystem": "2.7.*",
-    "symfony/finder": "2.7.*",
     "twig/tracelytics": "@dev"
   },
   "autoload-dev": {
