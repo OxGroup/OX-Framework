@@ -15,7 +15,8 @@
     "symfony/http-foundation": "2.*",
     "nette/mail": "2.*",
     "aptoma/twig-markdown": "2.*",
-    "twig/tracelytics": "@dev"
+    "twig/tracelytics": "@dev",
+    "doctrine/dbal": "2.*"
   },
   "autoload-dev": {
     "psr-0": {
