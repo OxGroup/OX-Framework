@@ -124,6 +124,7 @@ class Auth extends AbstractModel
             $id = (object)array();
             $id->id = 0;
             $id->name = null;
+            $id->login = null;
         }
         return $id;
     }
