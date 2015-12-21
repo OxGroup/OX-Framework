@@ -12,10 +12,9 @@
     "ext-pdo": "*",
     "filp/whoops": "1.1.*",
     "twig/twig": "1.23.*",
-    "symfony/http-foundation": "2.*",
+    "symfony/http-foundation": "3.0.*",
     "nette/mail": "2.*",
     "aptoma/twig-markdown": "2.*",
-    "twig/tracelytics": "@dev",
     "doctrine/dbal": "2.*"
   },
   "autoload-dev": {
