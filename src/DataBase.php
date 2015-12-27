@@ -136,7 +136,7 @@ class DataBase
                         break;
                 }
             }
-           // echo $key . "\n";
+            // echo $key . "\n";
             $key = $CharFix->charNumber($key);
             if (isset($doubleKeys[$sub . $key])) {
                 $doubleKeys[$sub . $key . $count++] = 0;
@@ -228,10 +228,12 @@ class DataBase
             if (!empty($limit)) {
                 $limit .= ", ";
             }
-            $limit .= "$key, $val";
+            $limit .= $val;
         }
         if (!empty($limit)) {
             static::$limit = " LIMIT {$limit}";
+        } else {
+            static::$limit = "";
         }
         return $this;
     }
