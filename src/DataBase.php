@@ -11,7 +11,7 @@ use Doctrine\DBAL\DriverManager;
 
 class DataBase
 {
-    public static $where, $orderBy, $table;
+    public static $where, $orderBy, $table, $selectBy = "*", $groupBy;
     protected static $whereTpl, $whereParams = array(), $limit, $dataTpl, $dataParams = array(), $forIn;
     public $dbh;
 
@@ -57,8 +57,121 @@ class DataBase
         return $this;
     }
 
+
+    /**
+     * @param array $array
+     *
+     * @return $this
+     */
+    public function selectBy($array = array())
+    {
+        $select = "";
+        foreach ($array as $key => $val) {
+            if (!empty($select)) {
+                $select .= ", ";
+            }
+            $select .= $val;
+        }
+        if (!empty($select)) {
+            static::$selectBy = $select;
+        } else {
+            static::$selectBy = "*";
+        }
+        return $this;
+    }
+
+
+    /**
+     * @param $array
+     *
+     * @return $this
+     */
+    public function data($array = array())
+    {
+        if (!empty($array)) {
+            $where = $this->buildParams($array, "d_");
+            static::$dataTpl = str_replace(" and ", ', ', $where['tpl']);
+            static::$dataParams = $where['data'];
+        }
+        return $this;
+    }
+
+    /**
+     * @param $array
+     *
+     * @return $this
+     */
+    public function orderBy($array = array())
+    {
+        $orderBy = "";
+
+        if (!empty($array) and gettype($array) != "string") {
+            foreach ($array as $key => $val) {
+                if (!empty($orderBy)) {
+                    $orderBy .= ", ";
+                }
+                $orderBy .= "`$key` $val";
+            }
+            static::$orderBy = " ORDER BY {$orderBy}";
+        } elseif (!empty($array)) {
+            static::$orderBy = " ORDER BY {$array}";
+        }
+        return $this;
+    }
+
+    /**
+     * @param array $array
+     *
+     * @return $this
+     */
+    public function groupBy($array = array())
+    {
+        $groupBy = "";
+
+        if (!empty($array) and gettype($array) != "string") {
+            foreach ($array as $key => $val) {
+                if (!empty($groupBy)) {
+                    $groupBy .= ", ";
+                }
+                $groupBy .= "`$key` $val";
+            }
+        }
+        if (!empty($groupBy)) {
+            static::$groupBy = " GROUP BY {$groupBy}";
+        } else {
+            static::$groupBy = "";
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param $array
+     *
+     * @return $this
+     */
+    public function limit($array = array())
+    {
+        $limit = "";
+        foreach ($array as $key => $val) {
+            if (!empty($limit)) {
+                $limit .= ", ";
+            }
+            $limit .= $val;
+        }
+        if (!empty($limit)) {
+            static::$limit = " LIMIT {$limit}";
+        } else {
+            static::$limit = "";
+        }
+        return $this;
+    }
+
     protected function clearParam()
     {
+        self::$selectBy = "*";
+        self::$groupBy = "";
+        self::$forIn = "";
         self::$where = "";
         self::$orderBy = "";
         self::$table = "";
@@ -178,65 +291,6 @@ class DataBase
 
     }
 
-    /**
-     * @param $array
-     *
-     * @return $this
-     */
-    public function data($array = array())
-    {
-        if (!empty($array)) {
-            $where = $this->buildParams($array, "d_");
-            static::$dataTpl = str_replace(" and ", ', ', $where['tpl']);
-            static::$dataParams = $where['data'];
-        }
-        return $this;
-    }
-
-    /**
-     * @param $array
-     *
-     * @return $this
-     */
-    public function orderBy($array = array())
-    {
-        $orderBy = "";
-
-        if (!empty($array) and gettype($array) != "string") {
-            foreach ($array as $key => $val) {
-                if (!empty($orderBy)) {
-                    $orderBy .= ", ";
-                }
-                $orderBy .= "`$key` $val";
-            }
-            static::$orderBy = " ORDER BY {$orderBy}";
-        } elseif (!empty($array)) {
-            static::$orderBy = " ORDER BY {$array}";
-        }
-        return $this;
-    }
-
-    /**
-     * @param $array
-     *
-     * @return $this
-     */
-    public function limit($array = array())
-    {
-        $limit = "";
-        foreach ($array as $key => $val) {
-            if (!empty($limit)) {
-                $limit .= ", ";
-            }
-            $limit .= $val;
-        }
-        if (!empty($limit)) {
-            static::$limit = " LIMIT {$limit}";
-        } else {
-            static::$limit = "";
-        }
-        return $this;
-    }
 
     /**
      * @return array
@@ -277,7 +331,7 @@ class DataBase
                 $where = "WHERE " . self::$whereTpl;
             }
             try {
-                $sqltxt = "SELECT * FROM `" . self::$table . "` {$where} " . self::$orderBy . " " . self::$limit . ";";
+                $sqltxt = "SELECT " . self::$selectBy . " FROM `" . self::$table . "` {$where} " . self::$orderBy . " " . self::$groupBy . " " . self::$limit . ";";
                 $sth = $this->dbh->prepare($sqltxt);
                 $sth->execute(self::$whereParams);
                 $result = $sth->fetchAll(\PDO::FETCH_OBJ);

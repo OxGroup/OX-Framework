@@ -80,18 +80,19 @@ abstract class AbstractModel
     }
 
     /**
-     * @param       $data
+     * @param       $where
      * @param array $orderBy
+     * @param array $limit
      *
-     * @return object|string|array
+     * @return bool|object|string
      */
-    public static function findByColumn($data, $orderBy = array(), $limit = array())
+    public static function findByColumn($where, $orderBy = array(), $limit = array())
     {
-        $cache = self::getCache($data, $orderBy);
+        $cache = self::getCache($where + $limit, $orderBy);
         if ($cache == false) {
             $mysql = new DataBase();
-            $result = $mysql->table(static::$table)->where($data)->orderBy($orderBy)->limit($limit)->read();
-            self::addCache($data, $orderBy, $result);
+            $result = $mysql->table(static::$table)->where($where)->orderBy($orderBy)->limit($limit)->read();
+            self::addCache($where + $limit, $orderBy, $result);
         } else {
             $result = $cache;
         }
@@ -107,6 +108,40 @@ abstract class AbstractModel
             "method" => "read");
         return $result;
     }
+
+
+    /**
+     * @param       $where
+     * @param array $countBy
+     * @param array $groupBy
+     * @param array $orderBy
+     * @param array $limit
+     *
+     * @return bool|object|string
+     */
+    public static function findCountGroupByColumn($where, $countBy = array(), $groupBy = array(), $orderBy = array(), $limit = array())
+    {
+        $cache = self::getCache($where + $limit + $countBy + $groupBy, $orderBy);
+        if ($cache == false) {
+            $mysql = new DataBase();
+            $result = $mysql->table(static::$table)->where($where)->orderBy($orderBy)->limit($limit)->selectBy($countBy)->groupBy($groupBy)->read();
+            self::addCache($where, $orderBy + $countBy + $groupBy, $result);
+        } else {
+            $result = $cache;
+        }
+        if (!empty($result) && $result->errorInfo[0] == 00000) {
+            $success = true;
+            $error = null;
+        } else {
+            $success = false;
+            $error = $result->errorInfo[0];
+        }
+        $result->result = (object)array("success" => $success,
+            "error" => $error,
+            "method" => "read");
+        return $result;
+    }
+
 
     /**
      * @param $data
