@@ -108,9 +108,10 @@ class DataBase
         if (!empty($array) and gettype($array) != "string") {
             foreach ($array as $key => $val) {
                 if (!empty($orderBy)) {
-                    $orderBy .= ", ";
+                    $orderBy .= " $val";
+                } else {
+                    $orderBy .= "`$val`";
                 }
-                $orderBy .= "`$key` $val";
             }
             static::$orderBy = " ORDER BY {$orderBy}";
         } elseif (!empty($array)) {
