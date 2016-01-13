@@ -15,6 +15,7 @@
     "symfony/http-foundation": "3.0.*",
     "nette/mail": "2.*",
     "aptoma/twig-markdown": "2.*",
+    "ox/database": "@dev",
     "doctrine/dbal": "2.*"
   },
   "autoload-dev": {
