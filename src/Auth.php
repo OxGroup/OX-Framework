@@ -42,7 +42,7 @@ class Auth extends AbstractModel
 
             $hash = new \Ox\Hash;
             $newremember_token = $hash->make($data->rows['0']->password . date("H:m:d:Y:s"));
-            self::update(array("remember_token" => $newremember_token), array("id" => $user));
+            self::data(array("remember_token" => $newremember_token))->where(array("id" => $user))->update();
 
         }
 
@@ -73,7 +73,7 @@ class Auth extends AbstractModel
      */
     private static function getUserConfig($id = null)
     {
-        return self::findByColumn(array("id" => $id));
+        return self::find(array("id" => $id));
     }
 
     /**
@@ -84,7 +84,7 @@ class Auth extends AbstractModel
         $cookie = new Request($_COOKIE);
 
 
-        $user = self::findByColumn(array("id" => $cookie->get("id")));
+        $user = self::find(array("id" => $cookie->get("id")));
 
         if (isset($user->rows['0']->remember_token) and isset($user->rows['0']->email) and $user->rows['0']->remember_token == $cookie->get("remember_token") and $user->rows['0']->email == $cookie->get("username")) {
             self::$userConfig = $user->rows['0'];
@@ -102,7 +102,7 @@ class Auth extends AbstractModel
     {
         $cookie = new Request($_COOKIE);
 
-        $user = self::findByColumn(array("id" => $cookie->get("id")));
+        $user = self::find(array("id" => $cookie->get("id")));
 
         if (isset($user->rows['0']->remember_token) and isset($user->rows['0']->email) and $user->rows['0']->remember_token == $cookie->get("remember_token") and $user->rows['0']->email == $cookie->get("username")) {
             $user->rows['0']->balance = $user->rows['0']->balance - $user->rows['0']->payd;
