@@ -16,24 +16,8 @@ class Ox
 {
     public static function start()
     {
-
-        $whoops = new Run();
-        $whoops->pushHandler(new PrettyPageHandler());
-
-        $whoops->pushHandler(function ($exception, $inspector, $run) {
-            $inspector->getFrames()->map(function ($frame) {
-                if ($function = $frame->getFunction()) {
-                    $frame->addComment("This frame is within function '$function'", 'cpt-obvious');
-                }
-                return $frame;
-            });
-        });
-
-        $whoops->register();
         session_start();
         Routes::start();
-
-
     }
 
 }
