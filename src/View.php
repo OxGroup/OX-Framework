@@ -49,12 +49,17 @@ class View
         } else {
             self::$settings += array('cache' => __DIR__ . '/../../../../' . static::$cache);
         }
-
         if (!empty($keys)) {
             foreach ($keys as $key => $val) {
                 self::$data[$key] = $val;
             }
         }
+        echo self::render($tpl);
+
+    }
+
+    protected static function render($tpl)
+    {
         $loader = new \Twig_Loader_Filesystem(__DIR__ . '/../../../../views');
         self::$twig = new \Twig_Environment($loader, self::$settings);
         self::$twig->addExtension(new \Twig_Extension_Debug());
@@ -63,7 +68,11 @@ class View
         self::$twig->addExtension(new \Twig_Extension_StringLoader());
         $engine = new MichelfMarkdownEngine();
         self::$twig->addExtension(new MarkdownExtension($engine));
-        echo self::$twig->render($tpl . '.tpl.php', self::$data);
+        try {
+            return self::$twig->render($tpl . '.tpl.php', self::$data);
+        } catch (\RuntimeException $e) {
+            throw new \Exception($e);
+        }
+
     }
 }
-
