@@ -17,7 +17,7 @@ class Ox
     public static function start()
     {
         session_start();
-        Routes::start();
+        Routes::go();
     }
 
 }
