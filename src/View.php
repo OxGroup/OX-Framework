@@ -17,6 +17,11 @@ class View
     protected static $data = array();
     public static $cache = false;
 
+    /**
+     * View constructor.
+     *
+     * @param bool $cache
+     */
     public function __construct($cache = false)
     {
         if ($cache == true) {
@@ -29,16 +34,29 @@ class View
 
     }
 
+    /**
+     * @param array $array
+     */
     public static function setSettings($array = array())
     {
         self::$settings += $array;
     }
 
+    /**
+     * @param $key
+     * @param $val
+     */
     public static function addKey($key, $val)
     {
         self::$data[$key] = $val;
     }
 
+    /**
+     * @param       $tpl
+     * @param array $keys
+     *
+     * @throws \Exception
+     */
     public static function build($tpl, $keys = array())
     {
         //set Settings:
@@ -58,6 +76,12 @@ class View
 
     }
 
+    /**
+     * @param $tpl
+     *
+     * @return string
+     * @throws \Exception
+     */
     protected static function render($tpl)
     {
         $loader = new \Twig_Loader_Filesystem(__DIR__ . '/../../../../views');

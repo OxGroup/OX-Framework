@@ -22,6 +22,9 @@ class Config
     public static $curr = array("ru" => "руб.", "by" => "руб.", "ua" => "грн.", "kz" => "тенге.",);
 
 
+    /**
+     * Config constructor.
+     */
     public function __construct()
     {
 
@@ -37,6 +40,9 @@ class Config
         }
     }
 
+    /**
+     * @return mixed
+     */
     public function subDomain()
     {
         $dir = str_replace(self::$domain, "", $_SERVER['HTTP_HOST']);
@@ -48,6 +54,9 @@ class Config
         return $dir;
     }
 
+    /**
+     * @return bool
+     */
     public function checkHost()
     {
         if (self::$domain == $_SERVER['HTTP_HOST']) {
