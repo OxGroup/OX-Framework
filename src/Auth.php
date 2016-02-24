@@ -1,6 +1,6 @@
 <?php
 /**
- * Created by OxProfitGroup.
+ * Created by OxGroupMedia.
  * User: aliaxander
  * Date: 06.06.15
  * Time: 14:36
@@ -9,6 +9,7 @@
 namespace Ox;
 
 use Ox\AbstractModel;
+use OxApp\models\Users;
 use \Symfony\Component\HttpFoundation\Cookie;
 use \Symfony\Component\HttpFoundation\Request;
 use \Symfony\Component\HttpFoundation\Response;
@@ -18,9 +19,8 @@ use \Symfony\Component\HttpFoundation\Response;
  *
  * @package Ox\models
  */
-class Auth extends AbstractModel
+class Auth
 {
-    protected static $table = "users";
     protected static $userConfig;
 
     /**
@@ -36,20 +36,23 @@ class Auth extends AbstractModel
         $data = self::getUserConfig($user);
 
         if (!empty($data->rows[0]->remember_token)) {
-            $newremember_token = $data->rows[0]->remember_token;
-
+            $newrememberToken = $data->rows[0]->remember_token;
         } else {
-
             $hash = new \Ox\Hash;
-            $newremember_token = $hash->make($data->rows['0']->password . date("H:m:d:Y:s"));
-            self::data(array("remember_token" => $newremember_token))->where(array("id" => $user))->update();
-
+            $newrememberToken = $hash->make($data->rows['0']->password . date("H:m:d:Y:s"));
+            Users::data(array("remember_token" => $newrememberToken))->where(array("id" => $user))->update();
         }
 
         $response = new Response();
-        $response->headers->setCookie(new Cookie('id', $user, time() + 60 * 60 * 24 * 30 * 12, "/"));
-        $response->headers->setCookie(new Cookie('username', $data->rows['0']->email, time() + 60 * 60 * 24 * 30 * 12, "/"));
-        $response->headers->setCookie(new Cookie('remember_token', $newremember_token, time() + 60 * 60 * 24 * 30 * 12, "/"));
+        $response->headers->setCookie(
+            new Cookie('id', $user, time() + 60 * 60 * 24 * 30 * 12, "/")
+        );
+        $response->headers->setCookie(
+            new Cookie('username', $data->rows['0']->email, time() + 60 * 60 * 24 * 30 * 12, "/")
+        );
+        $response->headers->setCookie(
+            new Cookie('remember_token', $newrememberToken, time() + 60 * 60 * 24 * 30 * 12, "/")
+        );
         $response->sendHeaders();
         return true;
     }
@@ -67,13 +70,13 @@ class Auth extends AbstractModel
     }
 
     /**
-     * @param null $id
+     * @param null $userId
      *
-     * @return array|object|string
+     * @return bool|object|string
      */
-    private static function getUserConfig($id = null)
+    private static function getUserConfig($userId = null)
     {
-        return self::find(array("id" => $id));
+        return Users::where(array("id" => $userId))->find();
     }
 
     /**
@@ -82,11 +85,12 @@ class Auth extends AbstractModel
     public static function getStatus()
     {
         $cookie = new Request($_COOKIE);
+        $user = Users::where(array("id" => $cookie->get("id")))->find();
 
-
-        $user = self::find(array("id" => $cookie->get("id")));
-
-        if (isset($user->rows['0']->remember_token) and isset($user->rows['0']->email) and $user->rows['0']->remember_token == $cookie->get("remember_token") and $user->rows['0']->email == $cookie->get("username")) {
+        if (isset($user->rows['0']->remember_token, $user->rows['0']->email) &&
+            $user->rows['0']->remember_token === $cookie->get("remember_token") &&
+            $user->rows['0']->email === $cookie->get("username")
+        ) {
             self::$userConfig = $user->rows['0'];
             return true;
         } else {
@@ -102,9 +106,12 @@ class Auth extends AbstractModel
     {
         $cookie = new Request($_COOKIE);
 
-        $user = self::find(array("id" => $cookie->get("id")));
+        $user = Users::find(array("id" => $cookie->get("id")));
 
-        if (isset($user->rows['0']->remember_token) and isset($user->rows['0']->email) and $user->rows['0']->remember_token == $cookie->get("remember_token") and $user->rows['0']->email == $cookie->get("username")) {
+        if (isset($user->rows['0']->remember_token, $user->rows['0']->email) &&
+            $user->rows['0']->remember_token == $cookie->get("remember_token") &&
+            $user->rows['0']->email == $cookie->get("username")
+        ) {
             $user->rows['0']->balance = $user->rows['0']->balance - $user->rows['0']->payd;
             self::$userConfig = $user->rows['0'];
             return true;
@@ -117,16 +124,15 @@ class Auth extends AbstractModel
     /**
      * @return object
      */
-    public static function GiveMeUserSettings()
+    public static function giveMeUserSettings()
     {
-        $id = self::$userConfig;
-        if (empty($id)) {
-            $id = (object)array();
-            $id->id = 0;
-            $id->name = null;
-            $id->login = null;
+        $profile = self::$userConfig;
+        if (empty($profile)) {
+            $profile = (object)array();
+            $profile->id = 0;
+            $profile->name = null;
+            $profile->login = null;
         }
-        return $id;
+        return $profile;
     }
-
 }
