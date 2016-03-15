@@ -1,6 +1,6 @@
 <?php
 /**
- * Created by OxProfitGroup.
+ * Created by OxGroup.
  * User: Александр
  * Date: 31.05.2015
  * Time: 21:15
@@ -10,6 +10,11 @@ namespace Ox;
 use Aptoma\Twig\Extension\MarkdownEngine\MichelfMarkdownEngine;
 use Aptoma\Twig\Extension\MarkdownExtension;
 
+/**
+ * Class View
+ *
+ * @package Ox
+ */
 class View
 {
     public static $settings = array();

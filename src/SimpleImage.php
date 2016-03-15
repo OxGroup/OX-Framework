@@ -1,6 +1,6 @@
 <?php
 /**
- * Created by OxProfitGroup.
+ * Created by OxGroup.
  * User: aliaxander
  * Date: 19.06.15
  * Time: 17:46
@@ -8,13 +8,20 @@
 
 namespace Ox;
 
-
+/**
+ * Class SimpleImage
+ *
+ * @package Ox
+ */
 class SimpleImage
 {
-    var $image;
-    var $image_type;
+    public $image;
+    public $image_type;
 
-    function load($filename)
+    /**
+     * @param $filename
+     */
+    public function load($filename)
     {
         $image_info = getimagesize($filename);
         $this->image_type = $image_info[2];
@@ -27,7 +34,13 @@ class SimpleImage
         }
     }
 
-    function save($filename, $image_type = IMAGETYPE_JPEG, $compression = 75, $permissions = null)
+    /**
+     * @param      $filename
+     * @param int  $image_type
+     * @param int  $compression
+     * @param null $permissions
+     */
+    public function save($filename, $image_type = IMAGETYPE_JPEG, $compression = 75, $permissions = null)
     {
         if ($image_type == IMAGETYPE_JPEG) {
             imagejpeg($this->image, $filename, $compression);
@@ -41,7 +54,10 @@ class SimpleImage
         }
     }
 
-    function output($image_type = IMAGETYPE_JPEG)
+    /**
+     * @param int $image_type
+     */
+    public function output($image_type = IMAGETYPE_JPEG)
     {
         if ($image_type == IMAGETYPE_JPEG) {
             imagejpeg($this->image);
@@ -52,41 +68,61 @@ class SimpleImage
         }
     }
 
-    function getWidth()
+    /**
+     * @return int
+     */
+    public function getWidth()
     {
         return imagesx($this->image);
     }
 
-    function getHeight()
+    /**
+     * @return int
+     */
+    public function getHeight()
     {
         return imagesy($this->image);
     }
 
-    function resizeToHeight($height)
+    /**
+     * @param $height
+     */
+    public function resizeToHeight($height)
     {
         $ratio = $height / $this->getHeight();
         $width = $this->getWidth() * $ratio;
         $this->resize($width, $height);
     }
 
-    function resizeToWidth($width)
+    /**
+     * @param $width
+     */
+    public function resizeToWidth($width)
     {
         $ratio = $width / $this->getWidth();
         $height = $this->getheight() * $ratio;
         $this->resize($width, $height);
     }
 
-    function scale($scale)
+    /**
+     * @param $scale
+     */
+    public function scale($scale)
     {
         $width = $this->getWidth() * $scale / 100;
         $height = $this->getheight() * $scale / 100;
         $this->resize($width, $height);
     }
 
-    function resize($width, $height)
+    /**
+     * @param $width
+     * @param $height
+     */
+    public function resize($width, $height)
     {
         $new_image = imagecreatetruecolor($width, $height);
-        imagecopyresampled($new_image, $this->image, 0, 0, 0, 0, $width, $height, $this->getWidth(), $this->getHeight());
+        imagecopyresampled($new_image, $this->image, 0, 0, 0, 0, $width, $height, $this->getWidth(),
+            $this->getHeight());
         $this->image = $new_image;
     }
 }

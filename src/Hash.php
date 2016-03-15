@@ -1,12 +1,13 @@
 <?php
 
 /**
- * Created by OxProfitGroup.
+ * Created by OxGroup.
  * User: Александр
  * Date: 02.06.2015
  * Time: 22:16
  */
 namespace Ox;
+
 class Hash
 {
     private $rounds;
@@ -29,12 +30,14 @@ class Hash
         } else {
             $this->make($input);
         }
+
         return false;
     }
 
     public function verify($input, $existingHash)
     {
         $hash = crypt($input . md5("oxcrm" . $input), $existingHash);
+
         return $hash === $existingHash;
     }
 
