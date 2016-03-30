@@ -22,7 +22,7 @@ use \Symfony\Component\HttpFoundation\Response;
 class Auth
 {
     protected static $userConfig;
-
+    
     /**
      * @param $user
      *
@@ -30,11 +30,11 @@ class Auth
      */
     public static function addSession($user)
     {
-
+        
         //self::delSession();
-
+        
         $data = self::getUserConfig($user);
-
+        
         if (!empty($data->rows[0]->remember_token)) {
             $newrememberToken = $data->rows[0]->remember_token;
         } else {
@@ -42,7 +42,7 @@ class Auth
             $newrememberToken = $hash->make($data->rows['0']->password . date("H:m:d:Y:s"));
             Users::data(array("remember_token" => $newrememberToken))->where(array("id" => $user))->update();
         }
-
+        
         $response = new Response();
         $response->headers->setCookie(
             new Cookie('id', $user, time() + 60 * 60 * 24 * 30 * 12, "/")
@@ -54,9 +54,10 @@ class Auth
             new Cookie('remember_token', $newrememberToken, time() + 60 * 60 * 24 * 30 * 12, "/")
         );
         $response->sendHeaders();
+        
         return true;
     }
-
+    
     /**
      * @return Response
      */
@@ -66,9 +67,10 @@ class Auth
         $response->headers->clearCookie('id', '');
         $response->headers->clearCookie('username', '');
         $response->headers->clearCookie('remember_token', '');
+        
         return $response->sendHeaders();
     }
-
+    
     /**
      * @param null $userId
      *
@@ -78,49 +80,29 @@ class Auth
     {
         return Users::where(array("id" => $userId))->find();
     }
-
+    
     /**
      * @return bool
      */
-    public static function getStatus()
+    public static function isStatus()
     {
         $cookie = new Request($_COOKIE);
         $user = Users::where(array("id" => $cookie->get("id")))->find();
-
+        
         if (isset($user->rows['0']->remember_token, $user->rows['0']->email) &&
             $user->rows['0']->remember_token === $cookie->get("remember_token") &&
             $user->rows['0']->email === $cookie->get("username")
         ) {
             self::$userConfig = $user->rows['0'];
+            
             return true;
         } else {
             self::$userConfig = false;
+            
             return false;
         }
     }
-
-    /**
-     * @return bool
-     */
-    public static function getConfigSess()
-    {
-        $cookie = new Request($_COOKIE);
-
-        $user = Users::find(array("id" => $cookie->get("id")));
-
-        if (isset($user->rows['0']->remember_token, $user->rows['0']->email) &&
-            $user->rows['0']->remember_token == $cookie->get("remember_token") &&
-            $user->rows['0']->email == $cookie->get("username")
-        ) {
-            $user->rows['0']->balance = $user->rows['0']->balance - $user->rows['0']->payd;
-            self::$userConfig = $user->rows['0'];
-            return true;
-        } else {
-            self::$userConfig = false;
-            return false;
-        }
-    }
-
+    
     /**
      * @return object
      */
@@ -133,6 +115,7 @@ class Auth
             $profile->name = null;
             $profile->login = null;
         }
+        
         return $profile;
     }
 }
