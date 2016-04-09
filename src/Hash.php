@@ -36,9 +36,7 @@ class Hash
 
     public function verify($input, $email, $existingHash)
     {
-        $hash = password_hash($input . md5($email . $input), PASSWORD_BCRYPT, $existingHash);
-
-        return $hash === $existingHash;
+        return password_verify($input . md5($email . $input), $existingHash);
     }
 
     private function getSalt()
