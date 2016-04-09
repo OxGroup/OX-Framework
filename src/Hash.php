@@ -21,9 +21,9 @@ class Hash
         $this->rounds = $rounds;
     }
 
-    public function make($input)
+    public function make($input, $email)
     {
-        $hash = crypt($input . md5("oxcrm" . $input), $this->getSalt());
+        $hash = password_hash($input . md5($email . $input), PASSWORD_BCRYPT, $this->getSalt());
 
         if (strlen($hash) > 13) {
             return $hash;
@@ -34,9 +34,9 @@ class Hash
         return false;
     }
 
-    public function verify($input, $existingHash)
+    public function verify($input, $email, $existingHash)
     {
-        $hash = crypt($input . md5("oxcrm" . $input), $existingHash);
+        $hash = password_hash($input . md5($email . $input), PASSWORD_BCRYPT, $existingHash);
 
         return $hash === $existingHash;
     }
@@ -49,7 +49,10 @@ class Hash
 
         $salt .= $this->encodeBytes($bytes);
 
-        return $salt;
+        return [
+            'cost' => 16,
+            'salt' => $salt,
+        ];
     }
 
     private $randomState;
@@ -126,5 +129,4 @@ class Hash
 
         return $output;
     }
-
 }
