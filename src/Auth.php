@@ -39,7 +39,7 @@ class Auth
             $newrememberToken = $data->rows[0]->remember_token;
         } else {
             $hash = new \Ox\Hash;
-            $newrememberToken = $hash->make($data->rows['0']->password . date("H:m:d:Y:s"));
+            $newrememberToken = $hash->make($data->rows['0']->password . date("H:m:d:Y:s"), $data->rows['0']->email);
             Users::data(array("remember_token" => $newrememberToken))->where(array("id" => $user))->update();
         }
         
