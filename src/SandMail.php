@@ -8,14 +8,12 @@
 
 namespace Ox;
 
-
 use Nette\Mail\Message;
 use Nette\Mail\SmtpMailer;
 use Ox\AbstractModel;
 
 class SandMail extends AbstractModel
 {
-
     public static function sand($title, $messageText, $emailTo)
     {
         $smtpSettings = array();
@@ -46,5 +44,4 @@ class SandMail extends AbstractModel
 
         $mailer->send($message);
     }
-    
 }

@@ -8,10 +8,20 @@
  */
 namespace Ox;
 
+/**
+ * Class Hash
+ *
+ * @package Ox
+ */
 class Hash
 {
     private $rounds;
 
+    /**
+     * Hash constructor.
+     *
+     * @param int $rounds
+     */
     public function __construct($rounds = 12)
     {
         if (CRYPT_BLOWFISH != 1) {
@@ -21,6 +31,12 @@ class Hash
         $this->rounds = $rounds;
     }
 
+    /**
+     * @param $input
+     * @param $email
+     *
+     * @return bool|string
+     */
     public function make($input, $email)
     {
         $hash = password_hash($input . md5($email . $input), PASSWORD_BCRYPT, $this->getSalt());
@@ -28,17 +44,27 @@ class Hash
         if (strlen($hash) > 13) {
             return $hash;
         } else {
-            $this->make($input);
+            $this->make($input, $email);
         }
 
         return false;
     }
 
+    /**
+     * @param $input
+     * @param $email
+     * @param $existingHash
+     *
+     * @return bool
+     */
     public function verify($input, $email, $existingHash)
     {
         return password_verify($input . md5($email . $input), $existingHash);
     }
 
+    /**
+     * @return array
+     */
     private function getSalt()
     {
         $salt = sprintf('$2a$%02d$', $this->rounds);
@@ -55,6 +81,11 @@ class Hash
 
     private $randomState;
 
+    /**
+     * @param $count
+     *
+     * @return string
+     */
     private function getRandomBytes($count)
     {
         $bytes = '';
@@ -98,6 +129,11 @@ class Hash
         return $bytes;
     }
 
+    /**
+     * @param $input
+     *
+     * @return string
+     */
     private function encodeBytes($input)
     {
         // The following is code from the PHP Password Hashing Framework

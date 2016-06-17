@@ -36,7 +36,6 @@ class View
         } else {
             self::$settings = array('cache' => __DIR__ . '/../../../../' . $cache);
         }
-
     }
 
     /**
@@ -78,7 +77,6 @@ class View
             }
         }
         echo self::render($tpl);
-
     }
 
     /**
@@ -102,6 +100,5 @@ class View
         } catch (\RuntimeException $e) {
             throw new \Exception($e);
         }
-
     }
 }

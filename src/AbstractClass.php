@@ -19,5 +19,4 @@ namespace Ox;
 abstract class AbstractClass
 {
     abstract public function get();
-
 }
