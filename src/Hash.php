@@ -71,12 +71,12 @@ class Hash
     {
         $salt = sprintf('$2a$%02d$', $this->rounds);
         
-        $bytes = $this->getRandomBytes(5);
+        $bytes = $this->getRandomBytes(13);
         
         $salt .= $this->encodeBytes($bytes);
         
         return [
-            'cost' => 5,
+            'cost' => 6,
             'salt' => $salt,
         ];
     }
@@ -147,7 +147,7 @@ class Hash
             $c1 = ord($input[$i++]);
             $output .= $itoa64[$c1 >> 2];
             $c1 = ($c1 & 0x03) << 4;
-            if ($i >= 16) {
+            if ($i >= 13) {
                 $output .= $itoa64[$c1];
                 break;
             }
