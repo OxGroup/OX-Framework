@@ -41,7 +41,7 @@ class Hash
      */
     public function make($input, $email)
     {
-        $hash = password_hash($input . md5($email . $input), PASSWORD_BCRYPT, $this->getSalt());
+        $hash = password_hash($input . md5($email . $input), PASSWORD_DEFAULT, $this->getSalt());
         
         if (strlen($hash) > 13) {
             return $hash;
